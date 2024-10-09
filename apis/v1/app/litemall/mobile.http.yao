@@ -1,0 +1,820 @@
+{
+    "name": "litemall 移动端请求",
+    "version": "1.0.0",
+    "description": "litemall 移动端请求",
+    "group": "/lmall/m/", //"使用group来修改默认的请求前缀，默认是/api/v1/app/litemall/m"
+    "guard": "bearer-jwt",
+    "paths": [
+        {
+            // /api/lmall/m/home/index
+            "label": "首页产品信息",
+            "description": "首页产品信息",
+            "path": "/home/index",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.shop.homeIndex",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/cataog/index
+            "label": "分类信息",
+            "description": "分类信息",
+            "path": "/catalog/index",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.catelog.index",
+            "in": [],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/cataog/current
+            "label": "分类目录当前分类信息",
+            "description": "分类目录当前分类信息",
+            "path": "/catalog/current",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.catelog.current",
+            "in": [
+                "$query.id"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/auth/login
+            "label": "登录请求",
+            "description": "用户自定义登录请求",
+            "path": "auth/login",
+            "method": "POST",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.user.Login",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/auth/logout
+            "label": "用户登出",
+            "description": "用户登出请求",
+            "path": "/auth/logout",
+            "method": "post",
+            "guard": "bearer-jwt",
+            "process": "scripts.app.litemall.mobile.user.Logout",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mauth/info
+            "label": "用户信息",
+            "description": "用户信息获取",
+            "path": "/auth/info",
+            "method": "get",
+            "process": "scripts.app.litemall.mobile.user.Info",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mauth/profile
+            "label": "账号修改",
+            "description": "账号信息修改",
+            "path": "/auth/profile",
+            "method": "post",
+            "process": "scripts.app.litemall.mobile.user.profile",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/muser/index
+            "label": "个人页面用户相关信息",
+            "description": "个人页面用户相关信息",
+            "path": "/user/index",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.user.index",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mauth/register
+            "label": "账号注册",
+            "description": "账号注册",
+            "path": "/auth/register",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.auth.register",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mauth/reset
+            "label": "账号密码重置",
+            "description": "账号密码重置",
+            "path": "/auth/reset",
+            "method": "post",
+            "process": "scripts.app.litemall.mobile.auth.reset",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mauth/regCaptcha
+            "label": "注册验证码",
+            "description": "注册验证码",
+            "path": "/auth/regCaptcha",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.auth.regCaptcha",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mauth/captcha
+            "label": "验证码",
+            "description": "验证码",
+            "path": "/auth/captcha",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.auth.captcha",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mgoods/count
+            "label": "统计商品总数",
+            "description": "统计商品总数",
+            "path": "/goods/count",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.goods.count",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mgoods/list
+            "label": "获得商品列表",
+            "description": "获得商品列表",
+            "path": "/goods/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.goods.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mgoods/category
+            "label": "获得分类数据",
+            "description": "获得分类数据",
+            "path": "/goods/category",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.goods.category",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mgoods/detail
+            "label": "获得商品的详情",
+            "description": "获得商品的详情",
+            "path": "/goods/detail",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.goods.detail",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mbrand/list
+            "label": "品牌列表",
+            "description": "品牌列表",
+            "path": "/brand/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.brand.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mbrand/detail
+            "label": "品牌详情",
+            "description": "品牌详情",
+            "path": "/brand/detail",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.brand.detail",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/index
+            "label": "获取购物车的数据",
+            "description": "获取购物车的数据",
+            "path": "/cart/index",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.index",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/add
+            "label": "添加商品到购物车",
+            "description": "添加商品到购物车",
+            "path": "/cart/add",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.add",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/fastadd
+            "label": "立即购买商品",
+            "description": "立即购买商品",
+            "path": "/cart/fastadd",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.fastadd",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/update
+            "label": "更新购物车的商品",
+            "description": "更新购物车的商品",
+            "path": "/cart/update",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.update",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/delete
+            "label": "删除购物车的商品",
+            "description": "删除购物车的商品",
+            "path": "/cart/delete",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.deleteItem",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/checked
+            "label": "选择或取消选择商品",
+            "description": "选择或取消选择商品",
+            "path": "/cart/checked",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.checked",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/goodscount
+            "label": "获取购物车商品件数",
+            "description": "获取购物车商品件数",
+            "path": "/cart/goodscount",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.goodscount",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcart/checkout
+            "label": "下单前信息确认",
+            "description": "下单前信息确认",
+            "path": "/cart/checkout",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.cart.checkout",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcollect/list
+            "label": "收藏列表",
+            "description": "收藏列表",
+            "path": "/collect/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.collect.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcollect/addordelete
+            "label": "添加或取消收藏",
+            "description": "添加或取消收藏",
+            "path": "/collect/addordelete",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.collect.addordelete",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mtopic/list
+            "label": "专题列表",
+            "description": "专题列表",
+            "path": "/topic/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.topic.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mtopic/detail
+            "label": "专题详情",
+            "description": "专题详情",
+            "path": "/topic/detail",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.topic.detail",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mtopic/related
+            "label": "相关专题",
+            "description": "相关专题",
+            "path": "/topic/related",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.topic.related",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/maddress/list
+            "label": "收货地址列表",
+            "description": "收货地址列表",
+            "path": "/address/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.address.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/maddress/detail
+            "label": "收货地址详情",
+            "description": "收货地址详情",
+            "path": "/address/detail",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.address.detail",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/maddress/save
+            "label": "保存收货地址",
+            "description": "保存收货地址",
+            "path": "/address/save",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.address.save",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/maddress/delete
+            "label": "删除收货地址",
+            "description": "删除收货地址",
+            "path": "/address/delete",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.address.deleteItem",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/submit
+            "label": "提交订单",
+            "description": "提交订单",
+            "path": "/order/submit",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.submit",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/prepay
+            "label": "订单的预支付会话",
+            "description": "订单的预支付会话",
+            "path": "/order/prepay",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.prepay",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/h5pay
+            "label": "h5支付",
+            "description": "h5支付",
+            "path": "/order/h5pay",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.h5pay",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/list
+            "label": "订单列表",
+            "description": "订单列表",
+            "path": "/order/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/detail
+            "label": "订单详情",
+            "description": "订单详情",
+            "path": "/order/detail",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.detail",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/cancel
+            "label": "取消订单",
+            "description": "取消订单",
+            "path": "/order/cancel",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.cancel",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/refund
+            "label": "退款取消订单",
+            "description": "退款取消订单",
+            "path": "/order/refund",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.refund",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/delete
+            "label": "删除订单",
+            "description": "删除订单",
+            "path": "/order/delete",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.deleteItem",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/morder/confirm
+            "label": "确认收货",
+            "description": "确认收货",
+            "path": "/order/confirm",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.order.confirm",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mfeedback/submit
+            "label": "添加反馈",
+            "description": "添加反馈",
+            "path": "/feedback/submit",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.feedback.submit",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mgroupon/list
+            "label": "团购列表",
+            "description": "团购列表",
+            "path": "/groupon/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.groupon.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcoupon/list
+            "label": "优惠券列表",
+            "description": "优惠券列表",
+            "path": "/coupon/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.coupon.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcoupon/mylist
+            "label": "我的优惠券列表",
+            "description": "我的优惠券列表",
+            "path": "/coupon/mylist",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.coupon.mylist",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcoupon/selectlist
+            "label": "当前订单可用优惠券列表",
+            "description": "当前订单可用优惠券列表",
+            "path": "/coupon/selectlist",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.coupon.selectlist",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/mcoupon/receive
+            "label": "优惠券领取",
+            "description": "优惠券领取",
+            "path": "/coupon/receive",
+            "method": "post",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.coupon.receive",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            // /api/lmall/m/missue/list
+            "label": "帮助信息",
+            "description": "帮助信息",
+            "path": "/issue/list",
+            "method": "get",
+            "guard": "-",
+            "process": "scripts.app.litemall.mobile.issue.list",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        }
+    ]
+}
