@@ -80,5 +80,15 @@
         "name": "app_litemall_category"
     },
     "name": "app_litemall_category",
-    "relations": {}
+    "relations": {
+        "subItems": {
+            "foreign": "pid",
+            "key": "id",
+            "model": "app.litemall.category", //与当前模型关联
+            "type": "hasMany"
+        }
+    }
 }
+//分类信息有两级，使用level来区分，L1为一级，L2为二级，L2级别通过pid来关联，pid为0为一级分类。
+// yao migrate -n app.litemall.category
+// yao run models.app.litemall.category.get "::{\"withs\":{\"subItems\":{}},\"limit\":5}"

@@ -11,6 +11,10 @@ function toSnakeCase(str) {
   });
 }
 
+export function apiWrapper(params) {
+  return convertKeysToSnakeCase(params);
+}
+
 /**
  * 将对象的键从下划线命名法转换为驼峰命名法
  * 如果传入的是数组，则会递归地对数组中的每个对象进行转换
