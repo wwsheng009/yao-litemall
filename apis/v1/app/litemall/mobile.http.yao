@@ -12,7 +12,7 @@
             "path": "/home/index",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.shop.homeIndex",
+            "process": "scripts.app.litemall.mobile.home.index",
             "in": [
                 ":payload"
             ],

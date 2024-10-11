@@ -12,7 +12,7 @@ function toSnakeCase(str) {
 }
 
 export function apiWrapper(params) {
-  return convertKeysToSnakeCase(params);
+  return convertKeysToCamelCase(params);
 }
 
 /**

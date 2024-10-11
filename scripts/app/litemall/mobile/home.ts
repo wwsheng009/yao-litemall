@@ -38,9 +38,9 @@ function getRulesGoods() {
 /**
  * 首页数据
  *
- * yao run scripts.app.litemall.mobile.shop.homeIndex
+ * yao run scripts.app.litemall.mobile.home.index
  */
-export function homeIndex(): LiteMallResPonse<shopInfos> {
+export function index(): LiteMallResPonse<shopInfos> {
   const bannerlist = Process('models.app.litemall.ad.get', {
     select: ['id', 'url'],
     wheres: [
