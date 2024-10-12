@@ -55,7 +55,7 @@
             // /api/lmall/m/auth/login
             "label": "登录请求",
             "description": "用户自定义登录请求",
-            "path": "auth/login",
+            "path": "/auth/login",
             "method": "POST",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.user.Login",
@@ -209,15 +209,15 @@
             }
         },
         {
-            // /api/lmall/m/mgoods/list
+            // /api/lmall/m/mgoods/list?categoryId=1008002&page=1&limit=10
             "label": "获得商品列表",
-            "description": "获得商品列表",
+            "description": "根据分类ID获得商品列表",
             "path": "/goods/list",
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.goods.list",
             "in": [
-                ":payload"
+                ":query"
             ],
             "out": {
                 "status": 200,
@@ -233,7 +233,7 @@
             "guard": "-",
             "process": "scripts.app.litemall.mobile.goods.category",
             "in": [
-                ":payload"
+                "$query.id"
             ],
             "out": {
                 "status": 200,

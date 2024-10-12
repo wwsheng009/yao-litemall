@@ -156,3 +156,16 @@ export function getCategoryListL1() {
 
   return channelList;
 }
+
+export function categoryFindById(id: number) {
+  const category = Process('models.app.litemall.category.find', id, {
+    select: [],
+    wheres: [{ column: 'deleted_at', op: 'null' }],
+    limit: 10000
+  } as YaoQueryParam.QueryParam);
+  return category;
+}
+
+export function categoryQueryByPid(pid: number) {
+  return getsecondcategory(pid);
+}
