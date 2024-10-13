@@ -29,6 +29,6 @@
     "table": {
         "name": "app_litemall_issue"
     },
-    "name": "app_litemall_issue",
+    "name": "app.litemall.issue",
     "relations": {}
 }

@@ -12,7 +12,68 @@ function toSnakeCase(str) {
 }
 
 export function apiWrapper(params) {
-  return convertKeysToCamelCase(params);
+  params = convertKeysToCamelCase(params);
+  return adapterArrays(params);
+}
+
+export function adapterArrays(data) {
+  // 如果是数组，则对数组中的每个元素进行处理
+  if (Array.isArray(data)) {
+    return data.map((item) => adapterArrays(item));
+  }
+  // 如果是对象，则对对象的键进行处理
+  else if (typeof data === 'object' && data !== null) {
+    const newObj = {};
+    for (const key in data) {
+      if (!data[key]) {
+        continue;
+      }
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        if (key === 'createdAt') {
+          const newKey = 'addTime';
+          newObj[newKey] = convertTimestampToFormattedDate(data[key]);
+        } else if (key === 'updatedAt') {
+          const newKey = 'updateTime';
+          newObj[newKey] = convertTimestampToFormattedDate(data[key]);
+        } else if (key === 'deletedAt') {
+          const newKey = 'deleted';
+          if (data[key] != null) {
+            newObj[newKey] = true;
+          } else {
+            newObj[newKey] = false;
+          }
+        } else {
+          newObj[key] = adapterArrays(data[key]);
+        }
+      }
+    }
+    return newObj;
+  }
+  // 如果是其他类型，则直接返回
+  return data;
+}
+function convertTimestampToFormattedDate(timestamp) {
+  // Create a Date object from the provided timestamp
+  if (!timestamp) {
+    return;
+  }
+
+  const originalDate = new Date(timestamp);
+
+  // Format the date into "YYYY-MM-DD HH:mm:ss"
+  const formattedDate =
+    originalDate.getFullYear() +
+    '-' +
+    ('0' + (originalDate.getMonth() + 1)).slice(-2) +
+    '-' +
+    ('0' + originalDate.getDate()).slice(-2) +
+    ' ' +
+    ('0' + originalDate.getHours()).slice(-2) +
+    ':' +
+    ('0' + originalDate.getMinutes()).slice(-2) +
+    ':' +
+    ('0' + originalDate.getSeconds()).slice(-2);
+  return formattedDate;
 }
 
 /**

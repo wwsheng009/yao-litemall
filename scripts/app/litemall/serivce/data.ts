@@ -13,17 +13,27 @@ export function saveDataById(modelId: ModelId, id: string, payload: object) {
  * 分页查询模型数据
  *
  * @param modelId - 模型ID
- * @param queryIn - 查询对象
+ * @param queryIn - 查询对象 get请求
+ * @param payload - 查询对象 post请求
+ * @param queryParamsIn  - 数据查询条件
  * @returns 分页查询结果
  */
-export function dataPaginate(modelId: ModelId, queryIn: QueryObjectIn) {
-  const querys = convertKeysToSnakeCase(queryIn);
+export function dataPaginate(
+  modelId: ModelId,
+  queryIn: QueryObjectIn,
+  payload: object,
+  queryParamsIn?: YaoQueryParam.QueryParam
+) {
+  let querys = convertKeysToSnakeCase(queryIn);
+  querys = mergeQueryObject(querys, payload);
+
   const page = parseInt(getArrayItem(querys, 'page')) || 1;
   const perPage = parseInt(getArrayItem(querys, 'limit')) || 10;
 
-  const queryParam = queryToQueryParam(modelId, querys, {
-    limit: 10000
-  });
+  const queryParams =
+    queryParamsIn != null ? { ...queryParamsIn } : { limit: 10000 };
+
+  const queryParam = queryToQueryParam(modelId, querys, queryParams);
 
   let data = searchModelData(modelId, queryParam, page, perPage);
   data = updateOutputData(modelId, data);
@@ -124,6 +134,7 @@ export function queryToQueryParam(
   if (typeof model === 'string') {
     model = FindCachedModelById(model);
   }
+
   model = addModelMetaFields(model);
 
   model.columns?.forEach((col) => {
@@ -323,7 +334,7 @@ export function FindCachedModelById(modelId: ModelId) {
     const modelDsl = updateModelMetaFields(model);
     return modelDsl;
   } else {
-    return null;
+    throw new Exception(`模型${modelId}不存在`);
   }
 }
 
@@ -399,6 +410,9 @@ export function updateModelMetaFields(
  */
 function addModelMetaFields(modelDsl2: YaoModel.ModelDSL) {
   const modelDsl = modelDsl2;
+  if (!modelDsl) {
+    return modelDsl;
+  }
   if (modelDsl.option?.timestamps) {
     let result = modelDsl.columns?.some((item) => item.name === 'created_at');
     if (!result) {
@@ -539,7 +553,9 @@ function updateOutputDataLine(dbColMap: object, line: object) {
     const modelCol = dbColMap[key];
     const colType = modelCol.type.toUpperCase();
     const field = line[key];
-
+    if (field === undefined) {
+      continue;
+    }
     switch (colType) {
       case 'JSON':
         if (typeof field === 'string' && field.length >= 2) {
@@ -547,10 +563,20 @@ function updateOutputDataLine(dbColMap: object, line: object) {
             line[key] = JSON.parse(field);
           } catch (error) {
             log.Error('invalid field data' + error.message);
-            // Handle error if required
           }
         }
         break;
+      case 'DECIMAL':
+        if (field) {
+          line[key] = Number(field);
+        }
+        break;
+      case 'BOOLEAN':
+        if (field) {
+          line[key] = true;
+        } else {
+          line[key] = false;
+        }
     }
   }
   return line;

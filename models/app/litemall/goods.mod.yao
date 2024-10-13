@@ -16,6 +16,30 @@
       "model": "app.litemall.category",
       "name": "category",
       "type": "hasOne"
+    },
+    "attributes": {
+      "model": "app.litemall.goods.attribute",
+      "name": "attributes",
+      "type": "hasMany",
+      "foreign": "goods_id",
+      "key": "id",
+      "label": "attributes"
+    },
+    "products": {
+      "model": "app.litemall.goods.product",
+      "name": "products",
+      "type": "hasMany",
+      "foreign": "goods_id",
+      "key": "id",
+      "label": "products"
+    },
+    "specifications": {
+      "model": "app.litemall.goods.specification",
+      "name": "specifications",
+      "type": "hasMany",
+      "foreign": "goods_id",
+      "key": "id",
+      "label": "specifications"
     }
   },
   "table": {

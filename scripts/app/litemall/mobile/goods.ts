@@ -2,7 +2,8 @@ import { Process } from '@yaoapps/client';
 import {
   dataPaginate,
   mergeQueryObject,
-  queryToQueryParam
+  queryToQueryParam,
+  updateOutputData
 } from '../serivce/data';
 import {
   categoryFindById,
@@ -10,6 +11,7 @@ import {
   queryL2ByIds as categoryQueryL2ByIds
 } from './catelog';
 import { apiWrapper, convertKeysToSnakeCase } from './utils';
+import { YaoQueryParam } from '@yaoapps/types';
 
 export function count() {}
 
@@ -46,7 +48,7 @@ export function list(queryIn) {
     'retail_price',
     'counter_price'
   ];
-  const goodsList = dataPaginate('app.litemall.goods', queryIn);
+  const goodsList = dataPaginate('app.litemall.goods', queryIn, {});
 
   // 查询商品所属类目列表。
   const catIds = getCategoryIds(
@@ -92,8 +94,111 @@ function getCategoryIds(
   return [...new Set(categoryIds)] as number[];
 }
 // getCategoryIds('', '', 1, 1);
+function findById(id) {
+  const data = Process('models.app.litemall.goods.find', id, {});
 
-export function detail() {}
+  return updateOutputData(`app.litemall.goods`, data);
+}
+
+function findSubItemById(attributeName, id) {
+  const data = Process(`models.app.litemall.goods.${attributeName}.get`, {
+    select: [],
+    wheres: [{ column: 'goods_id', value: id }],
+    limit: 1000
+  } as YaoQueryParam.QueryParam);
+
+  return updateOutputData(`app.litemall.goods.${attributeName}`, data);
+}
+
+function getSpecificationValueList(id: number) {
+  const specifications = findSubItemById('specification', id);
+
+  //按规格进行分组
+  const data =
+    specifications.reduce((prev, curr) => {
+      if (prev[curr.specification]) {
+        prev[curr.specification].push(curr);
+      } else {
+        prev[curr.specification] = [curr];
+      }
+      return prev;
+    }, {}) || {};
+  //convert the key,value in specification to valueList
+  //转换成数组
+  const result = Object.keys(data).map((key) => {
+    return {
+      name: key,
+      valueList: data[key]
+    };
+  });
+  return result;
+}
+
+/**
+ * yao run scripts.app.litemall.mobile.goods.detail 1009009
+ * @param id goods id
+ * @returns goods info
+ */
+export function detail(id: number) {
+  // 商品信息
+  // 商品属性
+  // 商品规格
+  // 商品规格对应的数量和价格
+  // 商品问题，这里是一些通用问题
+  // 商品品牌商
+  // 评论
+  // 团购信息
+  // 用户收藏
+  // 记录用户的足迹 异步处理
+  console.log('id', id);
+  const info = findById(id);
+
+  const comments = dataPaginate(
+    'app.litemall.comment',
+    {},
+    { page: 1, limit: 4 },
+    {
+      wheres: [
+        {
+          column: 'value_id',
+          value: id
+        }
+      ],
+      limit: 2
+    }
+  );
+  let brand = {};
+  try {
+    brand = Process('models.app.litemall.brand.find', info.brand_id, {});
+    if (brand) {
+      brand = updateOutputData('app.litemall.brand', brand);
+    }
+  } catch (error) {}
+
+  let groupon = Process('models.app.litemall.groupon.rules.get', {
+    wheres: [
+      { column: 'goods_id', value: id },
+      { column: 'status', value: 0 }
+    ]
+  });
+  groupon = updateOutputData('app.litemall.groupon.rules', groupon);
+
+  const data = {
+    info: info,
+    attribute: findSubItemById('attribute', id),
+    productList: findSubItemById('product', id),
+    specificationList: getSpecificationValueList(id),
+    groupon: groupon,
+    issue: dataPaginate('app.litemall.issue', {}, { page: 1, limit: 4 }).list,
+    userHasCollect: 0,
+    shareImage: {},
+    comment: { data: comments.list, count: comments.total },
+    share: [],
+    brand
+  };
+  return apiWrapper(data);
+}
+// detail(1109008);
 
 /**
  * 根据分类获取商品列表

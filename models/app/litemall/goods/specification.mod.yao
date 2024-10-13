@@ -45,6 +45,13 @@
     "table": {
         "name": "app_litemall_goods_specification"
     },
-    "name": "app_litemall_goods_specification",
-    "relations": {}
+    "name": "app.litemall.goods.specification",
+    "relations": {
+        "goods": {
+            "type": "hasOne",
+            "model": "app.litemall.goods",
+            "key": "id",
+            "foreign": "goods_id"
+        }
+    }
 }

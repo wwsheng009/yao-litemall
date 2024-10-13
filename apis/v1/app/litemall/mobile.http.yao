@@ -249,7 +249,7 @@
             "guard": "-",
             "process": "scripts.app.litemall.mobile.goods.detail",
             "in": [
-                ":payload"
+                "$query.id"
             ],
             "out": {
                 "status": 200,
