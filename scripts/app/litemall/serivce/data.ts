@@ -3,7 +3,7 @@ import { Exception, log, Process } from '@yaoapps/client';
 import { QueryObjectIn } from '@yao/request';
 import { YaoModel, YaoQueryParam } from '@yaoapps/types';
 import { PaginateSearchResult } from '@yao/types';
-import { convertKeysToSnakeCase } from '../mobile/utils';
+import { convertKeysToSnakeCase } from './utils';
 
 export function saveDataById(modelId: ModelId, id: string, payload: object) {
   return Process(`models.${modelId}.update`, id, payload);
@@ -560,7 +560,6 @@ function updateOutputDataLine(dbColMap: object, line: object) {
     }
     switch (colType) {
       case 'JSON':
-        console.log('json key=============>', key, field);
         if (typeof field === 'string' && field.length >= 2) {
           try {
             line[key] = JSON.parse(field);

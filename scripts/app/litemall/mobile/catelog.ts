@@ -1,7 +1,7 @@
 import { Process } from '@yaoapps/client';
 import { YaoQueryParam } from '@yaoapps/types';
 import { LiteMallResPonse, catelogInfo } from './type';
-import { apiWrapper } from './utils';
+import { apiWrapper } from '../serivce/utils';
 
 /**
  * 首页的分类数据

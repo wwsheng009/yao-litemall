@@ -10,7 +10,7 @@ import {
   categoryQueryByPid,
   queryL2ByIds as categoryQueryL2ByIds
 } from './catelog';
-import { apiWrapper, convertKeysToSnakeCase } from './utils';
+import { apiWrapper, convertKeysToSnakeCase } from '../serivce/utils';
 import { YaoQuery, YaoQueryParam } from '@yaoapps/types';
 
 /**

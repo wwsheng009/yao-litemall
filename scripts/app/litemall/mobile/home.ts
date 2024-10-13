@@ -1,6 +1,6 @@
 import { Process } from '@yao/yao';
 import { LiteMallResPonse, shopInfos } from './type';
-import { convertKeysToCamelCase } from './utils';
+import { convertKeysToCamelCase } from '../serivce/utils';
 import { YaoQueryParam } from '@yaoapps/types';
 
 /**
