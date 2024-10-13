@@ -23,17 +23,19 @@ function getRulesGoods() {
         }
       }
     },
-    limit: 10,
+    limit: 500,
     select: ['id', 'discount', 'discount_member']
   } as YaoQueryParam.QueryParam);
 
-  return grouponRulesList.map((r) => {
-    const item = { ...r.goods };
-    item.groupon_discount = r.discount;
-    item.groupon_member = r.discount_member;
-    item.groupon_price = item.retail_price - r.discount;
-    return item;
-  });
+  return grouponRulesList
+    .filter((f) => f.goods != null)
+    .map((r) => {
+      const item = { ...r.goods };
+      item.groupon_discount = r.discount;
+      item.groupon_member = r.discount_member;
+      item.groupon_price = item.retail_price - r.discount;
+      return item;
+    });
 }
 /**
  * 首页数据
@@ -88,7 +90,12 @@ export function index(): LiteMallResPonse<shopInfos> {
 
   const couponList = Process('models.app.litemall.coupon.get', {
     select: ['id', 'name', 'discount', 'tag', 'desc', 'days', 'end_time'],
-    limit: 10
+    wheres: [
+      { column: 'deleted_at', op: 'null' },
+      { column: 'status', value: 0 },
+      { column: 'type', value: 0 } //
+    ],
+    limit: 3
   } as YaoQueryParam.QueryParam);
 
   return convertKeysToCamelCase({

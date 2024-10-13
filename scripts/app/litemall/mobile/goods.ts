@@ -1,4 +1,4 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import {
   dataPaginate,
   mergeQueryObject,
@@ -11,9 +11,24 @@ import {
   queryL2ByIds as categoryQueryL2ByIds
 } from './catelog';
 import { apiWrapper, convertKeysToSnakeCase } from './utils';
-import { YaoQueryParam } from '@yaoapps/types';
+import { YaoQuery, YaoQueryParam } from '@yaoapps/types';
 
-export function count() {}
+/**
+ * 在售的商品总数
+ * yao run scripts.app.litemall.mobile.goods.count
+ */
+export function count() {
+  const q = new Query();
+  const rec = q.First({
+    select: [':COUNT(id) as total'],
+    from: '$app.litemall.goods',
+    wheres: [
+      { field: 'deleted_at', op: '=', value: null },
+      { field: 'is_on_sale', op: '=', value: 1 }
+    ]
+  } as YaoQuery.QueryDSL);
+  return rec.total;
+}
 
 /**
  * yao run scripts.app.litemall.mobile.goods.list
@@ -167,6 +182,10 @@ export function detail(id: number) {
       limit: 2
     }
   );
+  comments.list.map((l) => {
+    l.picList = l.pic_urls;
+    delete l.pic_urls;
+  });
   let brand = {};
   try {
     brand = Process('models.app.litemall.brand.find', info.brand_id, {});
@@ -198,7 +217,7 @@ export function detail(id: number) {
   };
   return apiWrapper(data);
 }
-// detail(1109008);
+// detail(1009024);
 
 /**
  * 根据分类获取商品列表

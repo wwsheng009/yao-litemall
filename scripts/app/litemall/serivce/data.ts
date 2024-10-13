@@ -35,9 +35,9 @@ export function dataPaginate(
 
   const queryParam = queryToQueryParam(modelId, querys, queryParams);
 
-  let data = searchModelData(modelId, queryParam, page, perPage);
-  data = updateOutputData(modelId, data);
-  return paginateToSearchResult(data);
+  const paginateData = searchModelData(modelId, queryParam, page, perPage);
+  paginateData.data = updateOutputData(modelId, paginateData.data);
+  return paginateToSearchResult(paginateData);
 }
 
 // 推荐在循环对象属性的时候，使用for...in,
@@ -518,6 +518,8 @@ export function paginateToSearchResult(
  *
  * 这个函数用于更新模型的输出数据。它接受一个模型对象和一个数据对象，并根据模型的列映射来更新数据对象中的列。
  *
+ * 注意：非递归检查转换，只处理数据集或是单个行项目
+ *
  * @param model - 模型对象，可以是模型 ID 或 YaoModel.ModelDSL 对象
  * @param data - 要更新的数据对象，可以是数组或单个对象
  * @returns 更新后的数据对象
@@ -558,6 +560,7 @@ function updateOutputDataLine(dbColMap: object, line: object) {
     }
     switch (colType) {
       case 'JSON':
+        console.log('json key=============>', key, field);
         if (typeof field === 'string' && field.length >= 2) {
           try {
             line[key] = JSON.parse(field);

@@ -13,9 +13,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.home.index",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -90,9 +88,7 @@
             "path": "/auth/info",
             "method": "get",
             "process": "scripts.app.litemall.mobile.user.Info",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -121,9 +117,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.user.index",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -200,9 +194,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.goods.count",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -264,9 +256,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.brand.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -280,9 +270,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.brand.detail",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -296,9 +284,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.cart.index",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -392,9 +378,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.cart.goodscount",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -408,9 +392,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.cart.checkout",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -424,9 +406,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.collect.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -456,9 +436,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.topic.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -472,9 +450,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.topic.detail",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -488,9 +464,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.topic.related",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -504,9 +478,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.address.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -520,9 +492,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.address.detail",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -616,9 +586,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.order.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -632,9 +600,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.order.detail",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -728,9 +694,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.groupon.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -744,9 +708,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.coupon.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -760,9 +722,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.coupon.mylist",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -776,9 +736,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.coupon.selectlist",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
@@ -808,9 +766,7 @@
             "method": "get",
             "guard": "-",
             "process": "scripts.app.litemall.mobile.issue.list",
-            "in": [
-                ":payload"
-            ],
+            "in": [],
             "out": {
                 "status": 200,
                 "type": "application/json"
