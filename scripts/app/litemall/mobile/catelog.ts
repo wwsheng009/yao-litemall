@@ -169,3 +169,34 @@ export function categoryFindById(id: number) {
 export function categoryQueryByPid(pid: number) {
   return getsecondcategory(pid);
 }
+
+/**
+ * 根据 ID 查询二级分类列表
+ *
+ * 这个函数用于根据提供的 ID 列表查询二级分类。它会返回一个包含所有匹配的二级分类的数组。
+ *
+ * yao run scripts.app.litemall.mobile.catelog.queryL2ByIds 1,2,3
+ *
+ * @param ids - 要查询的分类 ID 列表
+ * @returns 一个包含所有匹配的二级分类的数组
+ * @throws {Error} 如果查询过程中发生错误，将抛出错误
+ */
+export function queryL2ByIds(ids: number[]) {
+  if (ids && ids.length && typeof ids === 'string') {
+    ids = (ids + '').split(',').map(Number);
+  }
+
+  if (!Array.isArray(ids) || !ids.length) {
+    return [];
+  }
+
+  return Process('models.app.litemall.category.get', {
+    select: [],
+    wheres: [
+      { column: 'id', op: 'in', value: ids },
+      { column: 'level', value: 'L2' },
+      { column: 'deleted_at', op: 'null' }
+    ],
+    limit: 10000
+  });
+}

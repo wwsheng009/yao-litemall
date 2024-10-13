@@ -1,11 +1,15 @@
 import { Process } from '@yaoapps/client';
 import {
+  dataPaginate,
   mergeQueryObject,
-  queryToQueryParam,
-  searchModelData
+  queryToQueryParam
 } from '../serivce/data';
-import { categoryFindById, categoryQueryByPid } from './catelog';
-import { convertKeysToSnakeCase } from './utils';
+import {
+  categoryFindById,
+  categoryQueryByPid,
+  queryL2ByIds as categoryQueryL2ByIds
+} from './catelog';
+import { apiWrapper, convertKeysToSnakeCase } from './utils';
 
 export function count() {}
 
@@ -21,28 +25,46 @@ export function list(queryIn) {
   // * @param isNew      是否新品，可选
   // * @param isHot      是否热买，可选
   // * @param userId     用户ID
-  // * @param page       分页页数
-  // * @param limit       分页大小
+  // * @param page       分页页数 = 当前页码
+  // * @param limit      分页大小 = pagesize
   // * @param sort       排序方式，支持"add_time", "retail_price"或"name"
   // * @param order      排序类型，顺序或者降序
+
+  //to-do 添加到搜索历史
 
   queryIn = queryIn || {};
 
   const query = convertKeysToSnakeCase(queryIn);
 
-  const queryParam = queryToQueryParam('app.litemall.goods', query, {
-    limit: 10000
-  });
+  queryIn['select'] = [
+    'id',
+    'name',
+    'brief',
+    'pic_url',
+    'is_new',
+    'is_hot',
+    'retail_price',
+    'counter_price'
+  ];
+  const goodsList = dataPaginate('app.litemall.goods', queryIn);
 
-  const goodsList = searchModelData(
-    'app.litemall.goods',
-    queryParam,
-    queryIn.page,
-    queryIn.limit
+  // 查询商品所属类目列表。
+  const catIds = getCategoryIds(
+    query.brand_id,
+    query.keywords,
+    query.is_hot,
+    query.is_new
   );
 
-  return goodsList;
+  const filterCategoryList = categoryQueryL2ByIds(catIds);
+
+  return apiWrapper({ ...goodsList, filterCategoryList });
 }
+// list({
+//   categoryId: ['1008009'],
+//   limit: ['10'],
+//   page: ['1']
+// });
 
 /**
  * yao run scripts.app.litemall.mobile.goods.getCategoryIds
@@ -57,9 +79,8 @@ function getCategoryIds(
   keywords: string,
   is_hot: number,
   is_new: number
-) {
+): number[] {
   const query = mergeQueryObject({}, { brand_id, keywords, is_hot, is_new });
-
   const queryParam = queryToQueryParam('app.litemall.goods', query, {
     select: ['category_id'],
     limit: 10000
@@ -67,9 +88,10 @@ function getCategoryIds(
 
   const goodsList = Process('models.app.litemall.goods.get', queryParam);
 
-  const categoryIds = goodsList.map((item) => item.category_id);
-  return categoryIds;
+  const categoryIds = goodsList.map((item) => item.category_id) || [];
+  return [...new Set(categoryIds)] as number[];
 }
+// getCategoryIds('', '', 1, 1);
 
 export function detail() {}
 
@@ -95,9 +117,9 @@ export function category(id: number) {
     children = categoryQueryByPid(parent.id);
   }
 
-  return {
+  return apiWrapper({
     currentCategory: cur,
     parentCategory: parent,
     brotherCategory: children
-  };
+  });
 }

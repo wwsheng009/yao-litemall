@@ -1,11 +1,33 @@
-import { ModelId } from '@yao/types';
-import { Process } from '@yaoapps/client';
+import { ModelId, SearchResult } from '@yao/types';
+import { Exception, log, Process } from '@yaoapps/client';
 import { QueryObjectIn } from '@yao/request';
 import { YaoModel, YaoQueryParam } from '@yaoapps/types';
 import { PaginateSearchResult } from '@yao/types';
+import { convertKeysToSnakeCase } from '../mobile/utils';
 
 export function saveDataById(modelId: ModelId, id: string, payload: object) {
   return Process(`models.${modelId}.update`, id, payload);
+}
+
+/**
+ * 分页查询模型数据
+ *
+ * @param modelId - 模型ID
+ * @param queryIn - 查询对象
+ * @returns 分页查询结果
+ */
+export function dataPaginate(modelId: ModelId, queryIn: QueryObjectIn) {
+  const querys = convertKeysToSnakeCase(queryIn);
+  const page = parseInt(getArrayItem(querys, 'page')) || 1;
+  const perPage = parseInt(getArrayItem(querys, 'limit')) || 10;
+
+  const queryParam = queryToQueryParam(modelId, querys, {
+    limit: 10000
+  });
+
+  let data = searchModelData(modelId, queryParam, page, perPage);
+  data = updateOutputData(modelId, data);
+  return paginateToSearchResult(data);
 }
 
 // 推荐在循环对象属性的时候，使用for...in,
@@ -13,10 +35,15 @@ export function saveDataById(modelId: ModelId, id: string, payload: object) {
 // for...in循环出的是key，for...of循环出的是value
 // 注意，for...of是ES6新引入的特性。修复了ES5引入的for...in的不足
 // for...of不能循环普通的对象，需要通过和Object.keys()搭配使用
-export function mergeQueryObject(querysIn: QueryObjectIn, payload: object) {
-  // console.log(`types of querysIn${typeof querysIn}`);
-  // console.log(`types of payload${typeof payload}`);
 
+/**
+ * 合并查询对象
+ *
+ * @param querysIn - 输入的查询对象
+ * @param payload - 要合并的负载对象
+ * @returns 合并后的查询对象
+ */
+export function mergeQueryObject(querysIn: QueryObjectIn, payload: object) {
   if (payload == null) {
     return querysIn;
   }
@@ -28,7 +55,7 @@ export function mergeQueryObject(querysIn: QueryObjectIn, payload: object) {
   }
   const querys = querysIn;
 
-  if (typeof payload === 'object' && Object.keys(querys).length) {
+  if (typeof payload === 'object' && Object.keys(payload).length) {
     for (const key in payload) {
       if (Object.hasOwnProperty.call(payload, key)) {
         const element = payload[key];
@@ -118,6 +145,9 @@ export function queryToQueryParam(
   }
 
   const keywords = querys['keyword'];
+  // 只要有keyword的关键字就触发模糊搜索。
+  const hasKeyword = keywords != null && keywords.length ? true : false;
+
   delete querys['keyword'];
 
   delete querys['page'];
@@ -138,87 +168,95 @@ export function queryToQueryParam(
       option: option
     });
   }
-
-  for (const key in querys) {
-    // 不存在列
-    if (!Object.prototype.hasOwnProperty.call(columnMap, key)) {
-      continue;
+  // 关键字与其它条件的交叉查询可以根据实际情况来做调整。可以作交叉查询，也可以作联合查询。
+  // 一般来说，使用了关键字模糊查询，其它的条件就不做查询。
+  if (!hasKeyword) {
+    //delete undefined in querys
+    for (const key in querys) {
+      if (querys[key] === undefined) {
+        delete querys[key];
+      }
     }
-    const column = columnMap[key];
-    if (column == null) {
-      continue;
-    }
-    const isDateTime = isDateTimeType(column);
-
-    const conditions = querys[key]; // 查询都是一个数组
-
-    for (const condition of conditions) {
-      if (condition === '') {
-        // 前端无法清空搜索值
+    for (const key in querys) {
+      // 不存在列
+      if (!Object.prototype.hasOwnProperty.call(columnMap, key)) {
         continue;
       }
-      // 时间范围查询
-      if (isDateTime && condition.includes(',')) {
-        const conds = condition.split(',');
-        if (conds.length === 2) {
-          const low = conds[0];
-          const high = conds[1];
-          wheres.push({
-            column: key,
-            value: low,
-            method: 'where',
-            op: 'ge' // >=
-          });
-          wheres.push({
-            column: key,
-            value: high,
-            method: 'where',
-            op: 'le' // <=
-          });
-          whereCount += 2;
-          continue;
-        }
+      const column = columnMap[key];
+      if (column == null) {
+        continue;
       }
+      const isDateTime = isDateTimeType(column);
 
-      let param = {};
-      //* xx* 转换成数据库的%%
-      if (typeof condition === 'string' && condition.includes('*')) {
-        if (condition === '*') {
+      const conditions = querys[key]; // 查询都是一个数组
+
+      for (const condition of conditions) {
+        if (condition === '' || condition === undefined) {
+          // 前端无法清空搜索值
           continue;
         }
-        const newcondt = condition.replaceAll(/\*/g, '%');
-        param = {
-          column: key,
-          value: newcondt,
-          op: 'like'
-        };
-      } else {
-        param = {
-          column: key,
-          value: condition
-        };
+        // 时间范围查询
+        if (isDateTime && condition.includes(',')) {
+          const conds = condition.split(',');
+          if (conds.length === 2) {
+            const low = conds[0];
+            const high = conds[1];
+            wheres.push({
+              column: key,
+              value: low,
+              method: 'where',
+              op: 'ge' // >=
+            });
+            wheres.push({
+              column: key,
+              value: high,
+              method: 'where',
+              op: 'le' // <=
+            });
+            whereCount += 2;
+            continue;
+          }
+        }
+
+        let param = {};
+        //* xx* 转换成数据库的%%
+        if (typeof condition === 'string' && condition.includes('*')) {
+          if (condition === '*') {
+            continue;
+          }
+          const newcondt = condition.replaceAll(/\*/g, '%');
+          param = {
+            column: key,
+            value: newcondt,
+            op: 'like'
+          };
+        } else {
+          param = {
+            column: key,
+            value: condition
+          };
+        }
+        // 超过一个条件，使用交叉查询
+        if (whereCount > 1) {
+          param['method'] = 'where';
+        }
+        wheres.push(param);
+        whereCount += 1;
       }
-      // 超过一个条件，使用交叉查询
-      if (whereCount > 1) {
-        param['method'] = 'where';
-      }
-      wheres.push(param);
-      whereCount += 1;
     }
   }
 
   // 使用keywords进行模糊
   if (
-    keywords &&
+    hasKeyword &&
     Array.isArray(keywords) &&
     keywords.length &&
     keywords[0] != '' &&
-    keywords[0] != '*' &&
-    wheres.length == 0
+    keywords[0] != '*'
   ) {
     const keyword = keywords[0] + '';
     for (const colname in columnMap) {
-      // const type = column.type.toUpperCase();
+      // 排除一些字段，可以限制在那么有索引的字段里。
       if (
         colname == 'deleted_at' ||
         colname == 'updated_at' ||
@@ -227,10 +265,14 @@ export function queryToQueryParam(
       ) {
         continue;
       }
+
       if (Object.hasOwnProperty.call(columnMap, colname)) {
-        // console.log("colname:", colname);
         const column = columnMap[colname];
         if (column == null) {
+          continue;
+        }
+        // 只针对有索引的字段
+        if (!column.index) {
           continue;
         }
         const param = {
@@ -285,6 +327,40 @@ export function FindCachedModelById(modelId: ModelId) {
   }
 }
 
+/**
+ * 获取数据库模型列映射
+ *
+ * 该函数用于获取数据库模型的列映射。它接受一个模型 ID 或 YaoModel.ModelDSL 对象作为参数，并返回一个包含模型列信息的映射对象。
+ *
+ * @param model - 模型 ID 或 YaoModel.ModelDSL 对象
+ * @returns 一个对象，其中键是列名，值是对应的列对象
+ * @throws {Exception} 如果模型定义不正确或缺少字段定义，将抛出异常
+ */
+function getDbModelColumnMap(model: ModelId | YaoModel.ModelDSL) {
+  let modelDsl = model as YaoModel.ModelDSL;
+  if (typeof model === 'string') {
+    modelDsl = FindCachedModelById(model);
+  }
+
+  const columnMap = {};
+  modelDsl.columns?.forEach((col) => {
+    columnMap[col.name] = col;
+  });
+  if (Object.keys(columnMap).length == 0) {
+    throw new Exception('模型定义不正确，缺少字段定义', 500);
+  }
+  return columnMap;
+}
+
+/**
+ * 更新模型元数据字段
+ *
+ * 这个函数用于更新模型的元数据字段，例如列的标签。它接受一个模型的 DSL 对象，并根据模型的选项（如时间戳和软删除）来更新列的标签。
+ *
+ * @param modelDsl - 要更新的模型的 DSL 对象
+ * @returns 更新后的模型 DSL 对象
+ * @throws {Exception} 如果模型定义不正确或缺少字段定义，将抛出异常
+ */
 export function updateModelMetaFields(
   modelDsl: YaoModel.ModelDSL
 ): YaoModel.ModelDSL {
@@ -355,6 +431,14 @@ function addModelMetaFields(modelDsl2: YaoModel.ModelDSL) {
   return modelDsl;
 }
 
+/**
+ * 检查列类型是否为日期时间类型
+ *
+ * 这个函数用于判断给定的列是否属于日期时间类型。它通过检查列的类型属性来确定这一点。
+ *
+ * @param column - 要检查的列对象
+ * @returns 如果列类型是日期时间类型之一，则返回 true，否则返回 false
+ */
 export function isDateTimeType(column) {
   const columnType = column.type?.toUpperCase();
   switch (columnType) {
@@ -386,11 +470,88 @@ export function searchModelData(
   page: number,
   perPage: number
 ): PaginateSearchResult {
-  page = page || 1;
+  page = page || 10;
   perPage = perPage || 10;
 
   let modelData = null;
 
   modelData = Process(`models.${modelId}.Paginate`, queryParam, page, perPage);
   return modelData;
+}
+
+/**
+ * 将分页搜索结果转换为搜索结果对象
+ *
+ * @param pageData - 分页搜索结果对象
+ * @returns 转换后的搜索结果对象
+ * @description 该函数接受一个包含分页搜索结果的对象，并将其转换为一个包含列表、页码、总页数、总数和限制的搜索结果对象
+ */
+export function paginateToSearchResult(
+  pageData: PaginateSearchResult
+): SearchResult {
+  const result: SearchResult = {
+    list: pageData.data,
+    page: pageData.page,
+    pages: pageData.pagecnt,
+    total: pageData.total,
+    limit: pageData.pagesize
+  };
+  return result;
+}
+
+/**
+ * 更新模型输出数据
+ *
+ * 这个函数用于更新模型的输出数据。它接受一个模型对象和一个数据对象，并根据模型的列映射来更新数据对象中的列。
+ *
+ * @param model - 模型对象，可以是模型 ID 或 YaoModel.ModelDSL 对象
+ * @param data - 要更新的数据对象，可以是数组或单个对象
+ * @returns 更新后的数据对象
+ * @throws {Exception} 如果模型定义不正确或缺少字段定义，将抛出异常
+ */
+export function updateOutputData(model: ModelId | YaoModel.ModelDSL, Data) {
+  if (Data == null) {
+    return Data;
+  }
+  let modelDsl = model;
+  if (typeof modelDsl === 'string') {
+    // 如果使用yao model定义，无法获取用户定义的类型，比如json类型的数据就可能有多种含义。
+    modelDsl = FindCachedModelById(model as string);
+  }
+  const dbColmap = getDbModelColumnMap(modelDsl);
+
+  if (Array.isArray(Data)) {
+    return Data.map((line) => updateOutputDataLine(dbColmap, line));
+  }
+  return updateOutputDataLine(dbColmap, Data);
+}
+/**
+ * update the data line before output
+ * @param {object} dbColMap
+ * @param {object} line
+ * @returns
+ */
+function updateOutputDataLine(dbColMap: object, line: object) {
+  if (line == null || typeof line !== 'object') {
+    return line;
+  }
+  for (const key in dbColMap) {
+    const modelCol = dbColMap[key];
+    const colType = modelCol.type.toUpperCase();
+    const field = line[key];
+
+    switch (colType) {
+      case 'JSON':
+        if (typeof field === 'string' && field.length >= 2) {
+          try {
+            line[key] = JSON.parse(field);
+          } catch (error) {
+            log.Error('invalid field data' + error.message);
+            // Handle error if required
+          }
+        }
+        break;
+    }
+  }
+  return line;
 }

@@ -48,7 +48,8 @@
       "name": "name",
       "comment": "商品名称",
       "default": "",
-      "type": "string"
+      "type": "string",
+      "index": true
     },
     {
       "comment": "商品所属类目ID",
@@ -69,7 +70,7 @@
       "index": true
     },
     {
-      "type": "longText",
+      "type": "json",
       "comment": "商品宣传图片列表，采用JSON数组格式",
       "name": "gallery",
       "label": "商品宣传图片列表",
@@ -82,7 +83,8 @@
       "nullable": true,
       "type": "string",
       "length": 255,
-      "comment": "商品关键字，采用逗号间隔"
+      "comment": "商品关键字，采用逗号间隔",
+      "index": true
     },
     {
       "type": "string",
@@ -91,7 +93,8 @@
       "name": "brief",
       "comment": "商品简介",
       "length": 255,
-      "default": ""
+      "default": "",
+      "index": true
     },
     {
       "type": "boolean",
