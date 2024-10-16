@@ -12,7 +12,7 @@ import {
 } from './catelog';
 import { apiWrapper, convertKeysToSnakeCase } from '@scripts/serivce/utils';
 import { YaoQuery, YaoQueryParam } from '@yaoapps/types';
-import { AppLitemallGoodsService } from '@scripts/db_services/app_litemall_goods';
+import { AppLitemallGoodsService } from '@scripts/db_services/app/litemall/goods';
 
 /**
  * 在售的商品总数
