@@ -1,4 +1,4 @@
-import { FindCachedModelById } from '@scripts/app/litemall/serivce/data';
+import { FindCachedModelById } from '@scripts/serivce/data';
 import { FS, http, Process } from '@yaoapps/client';
 import { YaoModel } from '@yaoapps/types';
 
@@ -105,7 +105,7 @@ export function generateModelCode(modelId) {
     modelDsl
   );
 
-  const serviceName = modelId.replace(/\./g, '_');
+  const serviceName = modelId.replace(/\./g, '/');
 
   const fname = `/db_services/${serviceName}.ts`;
   const fs = new FS('script');
@@ -128,7 +128,7 @@ export function generateModelTypeCode(modelId) {
 
   const code = remoteCall('scripts.system.tstype.createTSTypes', modelDsl, 'I');
 
-  const typeName = modelId.replace(/\./g, '_');
+  const typeName = modelId.replace(/\./g, '/');
 
   // const typeName = toCamelCaseNameSpace(modelId);
   const fname = `/db_services/i_${typeName}.ts`;
