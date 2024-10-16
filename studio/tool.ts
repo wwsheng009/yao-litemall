@@ -89,6 +89,7 @@ export function toCamelCaseNameSpace(str) {
   });
   return newStr.charAt(0).toUpperCase() + newStr.slice(1);
 }
+
 /**
  * 生成模型服务代码
  *
@@ -104,9 +105,9 @@ export function generateModelCode(modelId) {
     modelDsl
   );
 
-  const serviceName = toCamelCaseNameSpace(modelId);
+  const serviceName = modelId.replace(/\./g, '_');
 
-  const fname = `/db_services/${serviceName}Service.ts`;
+  const fname = `/db_services/${serviceName}.ts`;
   const fs = new FS('script');
   if (!fs.Exists(fname)) {
     fs.WriteFile(fname, code);
@@ -127,8 +128,10 @@ export function generateModelTypeCode(modelId) {
 
   const code = remoteCall('scripts.system.tstype.createTSTypes', modelDsl, 'I');
 
-  const typeName = toCamelCaseNameSpace(modelId);
-  const fname = `/db_services/I${typeName}.ts`;
+  const typeName = modelId.replace(/\./g, '_');
+
+  // const typeName = toCamelCaseNameSpace(modelId);
+  const fname = `/db_services/i_${typeName}.ts`;
   const fs = new FS('script');
   if (!fs.Exists(fname)) {
     fs.WriteFile(fname, code);
