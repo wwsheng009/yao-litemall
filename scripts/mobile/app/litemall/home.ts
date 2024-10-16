@@ -1,6 +1,6 @@
 import { Process } from '@yao/yao';
 import { LiteMallResPonse, shopInfos } from './type';
-import { convertKeysToCamelCase } from '../serivce/utils';
+import { convertKeysToCamelCase } from '@scripts/serivce/utils';
 import { YaoQueryParam } from '@yaoapps/types';
 
 /**
@@ -40,7 +40,7 @@ function getRulesGoods() {
 /**
  * 首页数据
  *
- * yao run scripts.app.litemall.mobile.home.index
+ * yao run scripts.mobile.app.litemall.mobile.home.index
  */
 export function index(): LiteMallResPonse<shopInfos> {
   const bannerlist = Process('models.app.litemall.ad.get', {

@@ -12,7 +12,7 @@
             "path": "/home/index",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.home.index",
+            "process": "scripts.mobile.app.litemall.mobile.home.index",
             "in": [],
             "out": {
                 "status": 200,
@@ -26,7 +26,7 @@
             "path": "/catalog/index",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.catelog.index",
+            "process": "scripts.mobile.app.litemall.mobile.catelog.index",
             "in": [],
             "out": {
                 "status": 200,
@@ -40,7 +40,7 @@
             "path": "/catalog/current",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.catelog.current",
+            "process": "scripts.mobile.app.litemall.mobile.catelog.current",
             "in": [
                 "$query.id"
             ],
@@ -56,7 +56,7 @@
             "path": "/auth/login",
             "method": "POST",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.user.Login",
+            "process": "scripts.mobile.app.litemall.mobile.user.Login",
             "in": [
                 ":payload"
             ],
@@ -72,7 +72,7 @@
             "path": "/auth/logout",
             "method": "post",
             "guard": "bearer-jwt",
-            "process": "scripts.app.litemall.mobile.user.Logout",
+            "process": "scripts.mobile.app.litemall.mobile.user.Logout",
             "in": [
                 ":payload"
             ],
@@ -87,7 +87,7 @@
             "description": "用户信息获取",
             "path": "/auth/info",
             "method": "get",
-            "process": "scripts.app.litemall.mobile.user.Info",
+            "process": "scripts.mobile.app.litemall.mobile.user.Info",
             "in": [],
             "out": {
                 "status": 200,
@@ -100,7 +100,7 @@
             "description": "账号信息修改",
             "path": "/auth/profile",
             "method": "post",
-            "process": "scripts.app.litemall.mobile.user.profile",
+            "process": "scripts.mobile.app.litemall.mobile.user.profile",
             "in": [
                 ":payload"
             ],
@@ -116,7 +116,7 @@
             "path": "/user/index",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.user.index",
+            "process": "scripts.mobile.app.litemall.mobile.user.index",
             "in": [],
             "out": {
                 "status": 200,
@@ -130,7 +130,7 @@
             "path": "/auth/register",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.auth.register",
+            "process": "scripts.mobile.app.litemall.mobile.auth.register",
             "in": [
                 ":payload"
             ],
@@ -145,7 +145,7 @@
             "description": "账号密码重置",
             "path": "/auth/reset",
             "method": "post",
-            "process": "scripts.app.litemall.mobile.auth.reset",
+            "process": "scripts.mobile.app.litemall.mobile.auth.reset",
             "in": [
                 ":payload"
             ],
@@ -161,7 +161,7 @@
             "path": "/auth/regCaptcha",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.auth.regCaptcha",
+            "process": "scripts.mobile.app.litemall.mobile.auth.regCaptcha",
             "in": [
                 ":payload"
             ],
@@ -177,7 +177,7 @@
             "path": "/auth/captcha",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.auth.captcha",
+            "process": "scripts.mobile.app.litemall.mobile.auth.captcha",
             "in": [
                 ":payload"
             ],
@@ -193,7 +193,7 @@
             "path": "/goods/count",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.goods.count",
+            "process": "scripts.mobile.app.litemall.mobile.goods.count",
             "in": [],
             "out": {
                 "status": 200,
@@ -207,7 +207,7 @@
             "path": "/goods/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.goods.list",
+            "process": "scripts.mobile.app.litemall.mobile.goods.list",
             "in": [
                 ":query"
             ],
@@ -223,7 +223,7 @@
             "path": "/goods/category",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.goods.category",
+            "process": "scripts.mobile.app.litemall.mobile.goods.category",
             "in": [
                 "$query.id"
             ],
@@ -239,7 +239,7 @@
             "path": "/goods/detail",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.goods.detail",
+            "process": "scripts.mobile.app.litemall.mobile.goods.detail",
             "in": [
                 "$query.id"
             ],
@@ -255,7 +255,7 @@
             "path": "/brand/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.brand.list",
+            "process": "scripts.mobile.app.litemall.mobile.brand.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -269,7 +269,7 @@
             "path": "/brand/detail",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.brand.detail",
+            "process": "scripts.mobile.app.litemall.mobile.brand.detail",
             "in": [],
             "out": {
                 "status": 200,
@@ -283,7 +283,7 @@
             "path": "/cart/index",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.index",
+            "process": "scripts.mobile.app.litemall.mobile.cart.index",
             "in": [],
             "out": {
                 "status": 200,
@@ -297,7 +297,7 @@
             "path": "/cart/add",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.add",
+            "process": "scripts.mobile.app.litemall.mobile.cart.add",
             "in": [
                 ":payload"
             ],
@@ -313,7 +313,7 @@
             "path": "/cart/fastadd",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.fastadd",
+            "process": "scripts.mobile.app.litemall.mobile.cart.fastadd",
             "in": [
                 ":payload"
             ],
@@ -329,7 +329,7 @@
             "path": "/cart/update",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.update",
+            "process": "scripts.mobile.app.litemall.mobile.cart.update",
             "in": [
                 ":payload"
             ],
@@ -345,7 +345,7 @@
             "path": "/cart/delete",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.deleteItem",
+            "process": "scripts.mobile.app.litemall.mobile.cart.deleteItem",
             "in": [
                 ":payload"
             ],
@@ -361,7 +361,7 @@
             "path": "/cart/checked",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.checked",
+            "process": "scripts.mobile.app.litemall.mobile.cart.checked",
             "in": [
                 ":payload"
             ],
@@ -377,7 +377,7 @@
             "path": "/cart/goodscount",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.goodscount",
+            "process": "scripts.mobile.app.litemall.mobile.cart.goodscount",
             "in": [],
             "out": {
                 "status": 200,
@@ -391,7 +391,7 @@
             "path": "/cart/checkout",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.cart.checkout",
+            "process": "scripts.mobile.app.litemall.mobile.cart.checkout",
             "in": [],
             "out": {
                 "status": 200,
@@ -405,7 +405,7 @@
             "path": "/collect/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.collect.list",
+            "process": "scripts.mobile.app.litemall.mobile.collect.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -419,7 +419,7 @@
             "path": "/collect/addordelete",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.collect.addordelete",
+            "process": "scripts.mobile.app.litemall.mobile.collect.addordelete",
             "in": [
                 ":payload"
             ],
@@ -435,7 +435,7 @@
             "path": "/topic/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.topic.list",
+            "process": "scripts.mobile.app.litemall.mobile.topic.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -449,7 +449,7 @@
             "path": "/topic/detail",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.topic.detail",
+            "process": "scripts.mobile.app.litemall.mobile.topic.detail",
             "in": [],
             "out": {
                 "status": 200,
@@ -463,7 +463,7 @@
             "path": "/topic/related",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.topic.related",
+            "process": "scripts.mobile.app.litemall.mobile.topic.related",
             "in": [],
             "out": {
                 "status": 200,
@@ -477,7 +477,7 @@
             "path": "/address/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.address.list",
+            "process": "scripts.mobile.app.litemall.mobile.address.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -491,7 +491,7 @@
             "path": "/address/detail",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.address.detail",
+            "process": "scripts.mobile.app.litemall.mobile.address.detail",
             "in": [],
             "out": {
                 "status": 200,
@@ -505,7 +505,7 @@
             "path": "/address/save",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.address.save",
+            "process": "scripts.mobile.app.litemall.mobile.address.save",
             "in": [
                 ":payload"
             ],
@@ -521,7 +521,7 @@
             "path": "/address/delete",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.address.deleteItem",
+            "process": "scripts.mobile.app.litemall.mobile.address.deleteItem",
             "in": [
                 ":payload"
             ],
@@ -537,7 +537,7 @@
             "path": "/order/submit",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.submit",
+            "process": "scripts.mobile.app.litemall.mobile.order.submit",
             "in": [
                 ":payload"
             ],
@@ -553,7 +553,7 @@
             "path": "/order/prepay",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.prepay",
+            "process": "scripts.mobile.app.litemall.mobile.order.prepay",
             "in": [
                 ":payload"
             ],
@@ -569,7 +569,7 @@
             "path": "/order/h5pay",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.h5pay",
+            "process": "scripts.mobile.app.litemall.mobile.order.h5pay",
             "in": [
                 ":payload"
             ],
@@ -585,7 +585,7 @@
             "path": "/order/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.list",
+            "process": "scripts.mobile.app.litemall.mobile.order.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -599,7 +599,7 @@
             "path": "/order/detail",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.detail",
+            "process": "scripts.mobile.app.litemall.mobile.order.detail",
             "in": [],
             "out": {
                 "status": 200,
@@ -613,7 +613,7 @@
             "path": "/order/cancel",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.cancel",
+            "process": "scripts.mobile.app.litemall.mobile.order.cancel",
             "in": [
                 ":payload"
             ],
@@ -629,7 +629,7 @@
             "path": "/order/refund",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.refund",
+            "process": "scripts.mobile.app.litemall.mobile.order.refund",
             "in": [
                 ":payload"
             ],
@@ -645,7 +645,7 @@
             "path": "/order/delete",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.deleteItem",
+            "process": "scripts.mobile.app.litemall.mobile.order.deleteItem",
             "in": [
                 ":payload"
             ],
@@ -661,7 +661,7 @@
             "path": "/order/confirm",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.order.confirm",
+            "process": "scripts.mobile.app.litemall.mobile.order.confirm",
             "in": [
                 ":payload"
             ],
@@ -677,7 +677,7 @@
             "path": "/feedback/submit",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.feedback.submit",
+            "process": "scripts.mobile.app.litemall.mobile.feedback.submit",
             "in": [
                 ":payload"
             ],
@@ -693,7 +693,7 @@
             "path": "/groupon/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.groupon.list",
+            "process": "scripts.mobile.app.litemall.mobile.groupon.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -707,7 +707,7 @@
             "path": "/coupon/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.coupon.list",
+            "process": "scripts.mobile.app.litemall.mobile.coupon.list",
             "in": [],
             "out": {
                 "status": 200,
@@ -721,7 +721,7 @@
             "path": "/coupon/mylist",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.coupon.mylist",
+            "process": "scripts.mobile.app.litemall.mobile.coupon.mylist",
             "in": [],
             "out": {
                 "status": 200,
@@ -735,7 +735,7 @@
             "path": "/coupon/selectlist",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.coupon.selectlist",
+            "process": "scripts.mobile.app.litemall.mobile.coupon.selectlist",
             "in": [],
             "out": {
                 "status": 200,
@@ -749,7 +749,7 @@
             "path": "/coupon/receive",
             "method": "post",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.coupon.receive",
+            "process": "scripts.mobile.app.litemall.mobile.coupon.receive",
             "in": [
                 ":payload"
             ],
@@ -765,7 +765,7 @@
             "path": "/issue/list",
             "method": "get",
             "guard": "-",
-            "process": "scripts.app.litemall.mobile.issue.list",
+            "process": "scripts.mobile.app.litemall.mobile.issue.list",
             "in": [],
             "out": {
                 "status": 200,

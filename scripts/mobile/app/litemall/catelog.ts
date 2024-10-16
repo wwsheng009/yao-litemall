@@ -1,12 +1,12 @@
 import { Process } from '@yaoapps/client';
 import { YaoQueryParam } from '@yaoapps/types';
 import { LiteMallResPonse, catelogInfo } from './type';
-import { apiWrapper } from '../serivce/utils';
+import { apiWrapper } from '@scripts/serivce/utils';
 
 /**
  * 首页的分类数据
  *
- * yao run scripts.app.litemall.mobile.catelog.index
+ * yao run scripts.mobile.app.litemall.mobile.catelog.index
  */
 export function index(id: number): LiteMallResPonse<catelogInfo> {
   const categoryList = getfirstcategory();
@@ -56,7 +56,7 @@ export function current(id: number) {
 /**
  * 所有分类信息
  *
- * yao run scripts.app.litemall.mobile.catelog.all
+ * yao run scripts.mobile.app.litemall.mobile.catelog.all
  * @returns 所有分类
  */
 export function all() {
@@ -140,7 +140,7 @@ export function getsecondcategory(id: number) {
 }
 
 /**
- * yao run scripts.app.litemall.mobile.catelog.getCategoryListL1
+ * yao run scripts.mobile.app.litemall.mobile.catelog.getCategoryListL1
  * @returns L1分类
  */
 export function getCategoryListL1() {
@@ -175,7 +175,7 @@ export function categoryQueryByPid(pid: number) {
  *
  * 这个函数用于根据提供的 ID 列表查询二级分类。它会返回一个包含所有匹配的二级分类的数组。
  *
- * yao run scripts.app.litemall.mobile.catelog.queryL2ByIds 1,2,3
+ * yao run scripts.mobile.app.litemall.mobile.catelog.queryL2ByIds 1,2,3
  *
  * @param ids - 要查询的分类 ID 列表
  * @returns 一个包含所有匹配的二级分类的数组

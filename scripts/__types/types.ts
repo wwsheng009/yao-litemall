@@ -1,6 +1,5 @@
 export type ModelId = number | string;
 
-
 export interface PaginateSearchResult {
   /**数据记录集合 */
   data: { [key: string]: any }[];
