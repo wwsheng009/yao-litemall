@@ -117,14 +117,6 @@ export function generateModelCode(modelId) {
 }
 
 /**
- * 生成所有模型服务代码
- * yao studio run tool.generateAllModelService
- */
-export function generateAllModelService() {
-  getCachedModelIDList().map(generateModelCode);
-}
-
-/**
  * 生成模型类型代码
  *
  * yao studio run tool.generateModelTypeCode admin.user
@@ -145,5 +137,18 @@ export function generateModelTypeCode(modelId) {
     console.log(`file ${fname} already exists`);
   }
 }
-// const code = generateModelCode('admin.user');
-// console.log(code);
+
+/**
+ * 生成所有模型服务代码
+ * yao studio run tool.generateAllModelService
+ */
+export function generateAllModelService() {
+  getCachedModelIDList().map(generateModelCode);
+}
+
+/**
+ * 生成所有模型类型代码
+ */
+export function generateAllModelType() {
+  getCachedModelIDList().map(generateModelTypeCode);
+}
