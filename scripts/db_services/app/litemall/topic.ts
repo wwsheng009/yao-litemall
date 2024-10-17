@@ -24,7 +24,7 @@ export interface IAppLitemallTopic {
   /**排序 */
   sort_order?: number;
   /**专题相关商品 */
-  goods?: object;
+  goods?: number[];
   /**删除时间 */
   deleted_at?: Date;
   /**创建时间 */

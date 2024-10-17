@@ -27,8 +27,8 @@ export function dataPaginate(
   let querys = convertKeysToSnakeCase(queryIn);
   querys = mergeQueryObject(querys, payload);
 
-  const page = parseInt(getArrayItem(querys, 'page')) || 1;
-  const perPage = parseInt(getArrayItem(querys, 'limit')) || 10;
+  const page = parseInt(getArrayItem(querys, 'page'), 1);
+  const perPage = parseInt(getArrayItem(querys, 'limit', 10));
 
   const queryParams =
     queryParamsIn != null ? { ...queryParamsIn } : { limit: 10000 };
@@ -93,16 +93,18 @@ export function mergeQueryObject(querysIn: QueryObjectIn, payload: object) {
  */
 export function getArrayItem(
   querys: { [x: string]: string[] },
-  key: string
-): string {
+  key: string,
+  defaultValue?: any
+) {
   if (typeof querys !== 'object') {
-    return;
+    return defaultValue;
   }
   if (Array.isArray(querys[key]) && querys[key].length) {
     return querys[key][0];
-  } else {
-    return String(querys[key]);
+  } else if (Object.hasOwnProperty.call(querys, key)) {
+    return querys[key];
   }
+  return defaultValue;
 }
 
 /**
@@ -146,8 +148,11 @@ export function queryToQueryParam(
     querys != null &&
     Object.prototype.hasOwnProperty.call(querys, 'select')
   ) {
-    const joinedString = querys['select'].join(',');
-    const selectArray = joinedString.split(',');
+    let selectArray = querys.select;
+    if (selectArray && typeof selectArray === 'string') {
+      selectArray = (selectArray + '').split(',');
+    }
+
     select = [...new Set(selectArray)];
     delete querys['select'];
     select = select.filter((col) =>

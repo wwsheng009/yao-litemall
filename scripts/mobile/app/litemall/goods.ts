@@ -15,6 +15,7 @@ import { YaoQuery } from '@yaoapps/types';
 import { AppLitemallGoodsService } from '@scripts/db_services/app/litemall/goods';
 import { AppLitemallBrandService } from '@scripts/db_services/app/litemall/brand';
 import { AppLitemallGrouponRulesService } from '@scripts/db_services/app/litemall/groupon/rules';
+import { QueryObjectIn } from '@yao/request';
 
 /**
  * 在售的商品总数
@@ -38,7 +39,7 @@ export function count() {
  * @param queryIn
  * @returns
  */
-export function list(queryIn) {
+export function list(queryIn: QueryObjectIn) {
   // * @param categoryId 分类类目ID，可选
   // * @param brandId    品牌商ID，可选
   // * @param keyword    关键字，可选
@@ -106,7 +107,7 @@ function getCategoryIds(
     limit: 10000
   });
 
-  const goodsList = Process('models.app.litemall.goods.get', queryParam);
+  const goodsList = AppLitemallGoodsService.Get(queryParam);
 
   const categoryIds = goodsList.map((item) => item.category_id) || [];
   return [...new Set(categoryIds)] as number[];
