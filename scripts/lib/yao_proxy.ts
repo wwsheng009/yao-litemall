@@ -851,8 +851,13 @@ export class SessionProxy {
     return Process(`session.Del`, id, sesstionId);
   }
 
-  static Set(id: string, key: string, value: any, sesstionId?: string): string {
-    return Process(`session.Set`, id, sesstionId, key, value);
+  static Set(
+    id: string,
+    value: any,
+    timeout: number,
+    sesstionId?: string
+  ): string {
+    return Process(`session.Set`, id, value, timeout, sesstionId);
   }
   static Dump(): YaoRecord {
     return Process(`session.Dump`);
