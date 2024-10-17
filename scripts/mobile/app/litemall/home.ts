@@ -1,13 +1,21 @@
 import { LiteMallResPonse, shopInfos } from './type';
 import { apiWrapper } from '@scripts/serivce/utils';
-import { YaoQueryParam } from '@yaoapps/types';
 import { AppLitemallAdService } from '@scripts/db_services/app/litemall/ad';
 import { AppLitemallBrandService } from '@scripts/db_services/app/litemall/brand';
 import { AppLitemallCategoryService } from '@scripts/db_services/app/litemall/category';
-import { AppLitemallGoodsService, IAppLitemallGoods } from '@scripts/db_services/app/litemall/goods';
+import {
+  AppLitemallGoodsService,
+  IAppLitemallGoods
+} from '@scripts/db_services/app/litemall/goods';
 import { AppLitemallCouponService } from '@scripts/db_services/app/litemall/coupon';
 import { AppLitemallGrouponRulesService } from '@scripts/db_services/app/litemall/groupon/rules';
 import { AppLitemallTopicService } from '@scripts/db_services/app/litemall/topic';
+
+interface extendGood extends IAppLitemallGoods {
+  groupon_discount?: number;
+  groupon_member?: number;
+  groupon_price?: number;
+}
 
 /**
  * yao run scripts.app.litemall.shop.getRulesGoods
@@ -36,7 +44,7 @@ function getRulesGoods() {
   return grouponRulesList
     .filter((f) => f.goods != null)
     .map((r) => {
-      const item = { ...r.goods } as IAppLitemallGoods extends {groupon_discount: number, groupon_member: number, groupon_price: number};
+      const item = { ...r.goods } as extendGood;
       item.groupon_discount = r.discount;
       item.groupon_member = r.discount_member;
       item.groupon_price = item.retail_price - r.discount;
@@ -46,7 +54,7 @@ function getRulesGoods() {
 /**
  * 首页数据
  *
- * yao run scripts.mobile.app.litemall.mobile.home.index
+ * yao run scripts.mobile.app.litemall.home.index
  */
 export function index(): LiteMallResPonse<shopInfos> {
   const bannerlist = AppLitemallAdService.Get({

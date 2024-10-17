@@ -18,7 +18,7 @@ import { AppLitemallGrouponRulesService } from '@scripts/db_services/app/litemal
 
 /**
  * 在售的商品总数
- * yao run scripts.mobile.app.litemall.mobile.goods.count
+ * yao run scripts.mobile.app.litemall.goods.count
  */
 export function count() {
   const q = new Query();
@@ -34,7 +34,7 @@ export function count() {
 }
 
 /**
- * yao run scripts.mobile.app.litemall.mobile.goods.list
+ * yao run scripts.mobile.app.litemall.goods.list
  * @param queryIn
  * @returns
  */
@@ -87,7 +87,7 @@ export function list(queryIn) {
 // });
 
 /**
- * yao run scripts.mobile.app.litemall.mobile.goods.getCategoryIds
+ * yao run scripts.mobile.app.litemall.goods.getCategoryIds
  * @param brand_id
  * @param keywords
  * @param is_hot
@@ -148,7 +148,7 @@ function getSpecificationValueList(id: number) {
 }
 
 /**
- * yao run scripts.mobile.app.litemall.mobile.goods.detail 1009009
+ * yao run scripts.mobile.app.litemall.goods.detail 1009009
  * @param id goods id
  * @returns goods info
  */
@@ -217,7 +217,7 @@ export function detail(id: number) {
 
 /**
  * 根据分类获取商品列表
- * yao run scripts.mobile.app.litemall.mobile.goods.category 1
+ * yao run scripts.mobile.app.litemall.goods.category 1
  *
  * 用户在首页点击一级分类，获取该分类相关的其它分类
  */

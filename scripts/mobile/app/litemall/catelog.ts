@@ -8,7 +8,7 @@ import {
 /**
  * 首页的分类数据
  *
- * yao run scripts.mobile.app.litemall.mobile.catelog.index
+ * yao run scripts.mobile.app.litemall.catelog.index
  */
 export function index(id: number): LiteMallResPonse<catelogInfo> {
   const categoryList = getfirstcategory();
@@ -54,7 +54,7 @@ export function current(id: number) {
 /**
  * 所有分类信息
  *
- * yao run scripts.mobile.app.litemall.mobile.catelog.all
+ * yao run scripts.mobile.app.litemall.catelog.all
  * @returns 所有分类
  */
 export function all() {
@@ -123,7 +123,7 @@ export function getsecondcategory(id: number) {
 }
 
 /**
- * yao run scripts.mobile.app.litemall.mobile.catelog.getCategoryListL1
+ * yao run scripts.mobile.app.litemall.catelog.getCategoryListL1
  * @returns L1分类
  */
 export function getCategoryListL1() {
