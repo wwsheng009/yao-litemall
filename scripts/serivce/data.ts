@@ -484,13 +484,10 @@ export function searchModelData(
   page: number,
   perPage: number
 ): PaginateSearchResult {
-  page = page || 10;
+  page = page || 1;
   perPage = perPage || 10;
 
-  let modelData = null;
-
-  modelData = Process(`models.${modelId}.Paginate`, queryParam, page, perPage);
-  return modelData;
+  return Process(`models.${modelId}.Paginate`, queryParam, page, perPage);
 }
 
 /**

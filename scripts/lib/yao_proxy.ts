@@ -992,6 +992,118 @@ export class StrProxy {
   }
 }
 
+export class EnvProxy {
+  static Set(key: string, value: string): string {
+    return Process(`utils.env.Set`, key, value);
+  }
+
+  static Get(key: string): string {
+    return Process(`utils.env.Get`, key);
+  }
+
+  static SetMany(objects: { [key: string]: string }) {
+    return Process(`utils.env.SetMany`, objects);
+  }
+  static GetMany(key: string[]): { [key: string]: string } {
+    return Process(`utils.env.GetMany`, key);
+  }
+}
+
+export class UrlProxy {
+  /**
+   * ParseQuery parses the URL-encoded query string and returns
+   * a map listing the values specified for each key.
+   * ParseQuery always returns a non-nil map containing all the
+   * valid query parameters found; err describes the first decoding error
+   * encountered, if any.
+   *
+   * Query is expected to be a list of key=value settings separated by ampersands.
+   * A setting without an equals sign is interpreted as a key set to an empty
+   * value.
+   * Settings containing a non-URL-encoded semicolon are considered invalid.
+   * @param url
+   * @returns
+   */
+  static ParseQuery(url: string): { [key: string]: string[] } {
+    return Process(`utils.url.ParseQuery`, url);
+  }
+
+  /**
+   * URLToQueryParam url.Values 转换为 QueryParams
+   *
+   * 字段选择
+   *
+   * "select" : "name,secret,status,type" => { select: ["name","secret","status","type"]}
+   *
+   * 关联模型
+   *
+   * "with" : "mother,addresses" = > { withs: {"mother": {}, "addresses": {}}
+   *
+   * 关联模型的查询select
+   *
+   * "mother.select" : "name,mobile,type,status" => { withs: {"mother": {select: ["name","secret","status","type"]}}}
+   *
+   * "addresses.select" : "province,city,location,status" => { withs: {"addresses": {select: ["province","city","location","status"]}}}
+   *
+   * wheres条件匹配正则
+   *
+   * (where|orwhere|wherein|orwherein)\\.(.+)\\.(eq|gt|lt|ge|le|like|match|in|null|notnull)[\\[]*[\\]]*
+   *
+   * "where.status.eq" : "enabled" => "{wheres: [{ method: 'where', column: 'status', op: 'eq' ,value: 'enabled' }]}"
+   *
+   * "where.secret.notnull" : "" => "{wheres: [{ method: 'where', column: 'secret', op: 'notnull'}]}"
+   *
+   * "where.resume.null" : "{wheres: [{ method: 'where', column: 'resume', op: 'notnull' }]}"
+   *
+   * "where.mobile.eq" : "13900002222" => "{wheres: [{ method: 'where', column: 'mobile', op: 'eq', value: '13900002222 }]}"
+   *
+   * "orwhere.mobile.eq" : "13900001111" => "{wheres: [{ method: 'orwhere', column: 'mobile', op: 'eq', value: '13900002222 }]}"
+   *
+   * 带有关联模型的条件查询
+   *
+   * "where.mother.friends.status.eq" : "enabled" => "{wheres: [{ method: 'where', column: 'status', op: 'eq', value: 'enabled', rel:'mother' }]}"
+   *
+   * 带有关联穿透模型的条件查询，关联模型可以有多个层次，这里要找mohter关联模型中的compony关联模型
+   *
+   * "where.mother.compony.friends.status.eq" : "enabled" => "{wheres: [{ method: 'where', column: 'status', op: 'eq', value: 'enabled', rel:'mother.compony' }]}"
+   *
+   * 分组查询条件，group.作为前缀，types.作为分组的主键，types可以是任意名称
+   *
+   * "group.types.where.type.eq" : "admin" => "{wheres: [{ method: 'where', column: 'type', op: 'eq', value: 'admin' }]}"
+   *
+   * "group.types.orwhere.type.eq" : "staff" => "{wheres: [{ method: 'orwhere', column: 'type', op: 'eq', value: 'staff' }]}"
+   *
+   * "order" : "id.desc,name" = >"{orders: [{ column: 'id', option: 'desc' },{ column: 'name', option: 'asc' }]}"
+   *
+   * @param queryObject
+   * @returns
+   */
+  static QueryParam(queryObject: {
+    [key: string]: string[];
+  }): YaoQueryParam.QueryParam {
+    return Process(`utils.url.QueryParam`, queryObject);
+  }
+
+  /**
+   *  解析url，返回scheme,host,domain,path,port,query,url
+   * @param url
+   * @returns
+   */
+  static ParseURL(url: string): {
+    scheme: string;
+    host: string;
+    domain: string;
+    path: string;
+    port: number;
+    query: {
+      [key: string]: string[];
+    };
+    url: string;
+  } {
+    return Process(`utils.url.ParseURL`, url);
+  }
+}
+
 export interface FlattenOption {
   primary?: string;
   children?: string;
@@ -1023,15 +1135,9 @@ export interface JwtClaims {
 }
 
 /**
- * 日志对象
+ * 工具类
  */
 export class UtilsProxy {
-  //   static with(c: YaoApplication) {
-  //     Base.client = c;
-  //     return this; // Return the class itself
-  //   }
-  //   static client: YaoApplication;
-
   static Now(): typeof NowProxy {
     return NowProxy;
   }
@@ -1051,6 +1157,9 @@ export class UtilsProxy {
   }
   static Session(): typeof SessionProxy {
     return SessionProxy;
+  }
+  static Env(): typeof EnvProxy {
+    return EnvProxy;
   }
 
   static FlattenTree(
@@ -1099,6 +1208,61 @@ export class UtilsProxy {
     algorithm: string
   ): boolean {
     return Process('ssl.verify', data, sign, certName, algorithm);
+  }
+
+  static Print(...args) {
+    return Process('utils.fmt.Printf', ...args);
+  }
+
+  static Printf(format: string, ...args) {
+    return Process('utils.fmt.Printf', format, ...args);
+  }
+
+  /**
+   *
+   * @param color "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "black" | "hired" | "higreen" | "hiyellow" | "hiblue" | "himagenta" | "hicyan" | "hiwhite" | "hiblack"
+   * @param format
+   * @param args
+   * @returns
+   */
+  static ColorPrintf(
+    color:
+      | 'red'
+      | 'green'
+      | 'yellow'
+      | 'blue'
+      | 'magenta'
+      | 'cyan'
+      | 'white'
+      | 'black'
+      | 'hired'
+      | 'higreen'
+      | 'hiyellow'
+      | 'hiblue'
+      | 'himagenta'
+      | 'hicyan'
+      | 'hiwhite'
+      | 'hiblack',
+    format: string,
+    ...args
+  ) {
+    return Process('utils.fmt.ColorPrintf', color, format, ...args);
+  }
+
+  /**
+   * 验证json数据是否符合规则
+   *
+   * **Warning** This process under developing, do not use it
+   *
+   * @param json json data
+   * @param rules rules rules:[{'haskey': "value"}]
+   * @returns boolean
+   */
+  static JsonValidate(
+    json: { [key: string]: any },
+    rules: { [key: string]: any }[]
+  ): boolean {
+    return Process('utils.json.Validate', json, rules);
   }
 }
 
