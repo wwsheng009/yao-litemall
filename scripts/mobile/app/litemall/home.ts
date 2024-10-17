@@ -1,14 +1,20 @@
-import { Process } from '@yao/yao';
 import { LiteMallResPonse, shopInfos } from './type';
-import { convertKeysToCamelCase } from '@scripts/serivce/utils';
+import { apiWrapper } from '@scripts/serivce/utils';
 import { YaoQueryParam } from '@yaoapps/types';
+import { AppLitemallAdService } from '@scripts/db_services/app/litemall/ad';
+import { AppLitemallBrandService } from '@scripts/db_services/app/litemall/brand';
+import { AppLitemallCategoryService } from '@scripts/db_services/app/litemall/category';
+import { AppLitemallGoodsService, IAppLitemallGoods } from '@scripts/db_services/app/litemall/goods';
+import { AppLitemallCouponService } from '@scripts/db_services/app/litemall/coupon';
+import { AppLitemallGrouponRulesService } from '@scripts/db_services/app/litemall/groupon/rules';
+import { AppLitemallTopicService } from '@scripts/db_services/app/litemall/topic';
 
 /**
  * yao run scripts.app.litemall.shop.getRulesGoods
  * @returns
  */
 function getRulesGoods() {
-  const grouponRulesList = Process('models.app.litemall.groupon.rules.get', {
+  const grouponRulesList = AppLitemallGrouponRulesService.Get({
     withs: {
       goods: {
         query: {
@@ -25,12 +31,12 @@ function getRulesGoods() {
     },
     limit: 500,
     select: ['id', 'discount', 'discount_member']
-  } as YaoQueryParam.QueryParam);
+  });
 
   return grouponRulesList
     .filter((f) => f.goods != null)
     .map((r) => {
-      const item = { ...r.goods };
+      const item = { ...r.goods } as IAppLitemallGoods extends {groupon_discount: number, groupon_member: number, groupon_price: number};
       item.groupon_discount = r.discount;
       item.groupon_member = r.discount_member;
       item.groupon_price = item.retail_price - r.discount;
@@ -43,7 +49,7 @@ function getRulesGoods() {
  * yao run scripts.mobile.app.litemall.mobile.home.index
  */
 export function index(): LiteMallResPonse<shopInfos> {
-  const bannerlist = Process('models.app.litemall.ad.get', {
+  const bannerlist = AppLitemallAdService.Get({
     select: ['id', 'url'],
     wheres: [
       { column: 'position', value: 1 },
@@ -51,31 +57,31 @@ export function index(): LiteMallResPonse<shopInfos> {
       { column: 'deleted_at', op: 'null' }
     ],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
-  const branList = Process('models.app.litemall.brand.get', {
+  const branList = AppLitemallBrandService.Get({
     select: ['id', 'name', 'pic_url'],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
-  const channelList = Process('models.app.litemall.category.get', {
+  const channelList = AppLitemallCategoryService.Get({
     select: ['id', 'name', 'icon_url'],
     wheres: [{ column: 'level', value: 'L1' }],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
-  const topicList = Process('models.app.litemall.topic.get', {
+  const topicList = AppLitemallTopicService.Get({
     select: ['id', 'title', 'pic_url'],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
-  const newGoodsList = Process('models.app.litemall.goods.get', {
+  const newGoodsList = AppLitemallGoodsService.Get({
     select: ['id', 'name', 'pic_url'],
     wheres: [{ column: 'is_new', value: 1 }],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
-  const hotGoodsList = Process('models.app.litemall.goods.get', {
+  const hotGoodsList = AppLitemallGoodsService.Get({
     select: [
       'id',
       'title',
@@ -86,9 +92,9 @@ export function index(): LiteMallResPonse<shopInfos> {
     ],
     wheres: [{ column: 'is_hot', value: 1 }],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
-  const couponList = Process('models.app.litemall.coupon.get', {
+  const couponList = AppLitemallCouponService.Get({
     select: ['id', 'name', 'discount', 'tag', 'desc', 'days', 'end_time'],
     wheres: [
       { column: 'deleted_at', op: 'null' },
@@ -96,9 +102,9 @@ export function index(): LiteMallResPonse<shopInfos> {
       { column: 'type', value: 0 } //
     ],
     limit: 3
-  } as YaoQueryParam.QueryParam);
+  });
 
-  return convertKeysToCamelCase({
+  return apiWrapper({
     banner: bannerlist,
     channel: channelList,
     couponList: couponList,

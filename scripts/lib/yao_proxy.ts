@@ -1021,6 +1021,8 @@ export class UrlProxy {
    * A setting without an equals sign is interpreted as a key set to an empty
    * value.
    * Settings containing a non-URL-encoded semicolon are considered invalid.
+   *
+   * a=1&b=2&c=3&c=4 => { a: ['1'], b: ['2'], c: ['3', '4'] }
    * @param url
    * @returns
    */
@@ -1079,13 +1081,25 @@ export class UrlProxy {
    * @returns
    */
   static QueryParam(queryObject: {
-    [key: string]: string[];
+    [key: string]: string[] | string;
   }): YaoQueryParam.QueryParam {
     return Process(`utils.url.QueryParam`, queryObject);
   }
 
   /**
    *  解析url，返回scheme,host,domain,path,port,query,url
+   *
+   * http://www.google.com:8080/search?q=dotnet =>
+   *
+   * {
+   *    schema: 'http',
+   *    host: 'www.google.com:8080',
+   *    domain: 'www.google.com',
+   *    path: '/search',
+   *    port: '8080',
+   *    query: { q: ['dotnet'] },
+   *    url: 'http://www.google.com:8080/search?q=dotnet'
+   * }
    * @param url
    * @returns
    */
@@ -1113,24 +1127,81 @@ export interface JwtToken {
   token: string;
   expires_at: number;
 }
+/**
+ * 定义了一个 JWT 选项的接口
+ * 该接口包含了生成 JWT 时可以设置的选项字段
+ */
 export interface JwtOption {
+  /**
+   * 主题，通常用于标识 JWT 的主题
+   */
   subject?: string;
+  /**
+   * 受众，标识 JWT 的接收者
+   */
   audience?: string;
+  /**
+   * 签发者，标识 JWT 的签发者
+   */
   issuer?: string;
+  /**
+   * 会话标识符，用于标识会话
+   */
   sid?: string;
+  /**
+   * 超时时间，标识 JWT 的过期时间（以秒为单位）
+   */
   timeout?: number;
+  /**
+   * 过期时间，标识 JWT 的过期时间戳
+   */
   expires_at?: number;
 }
+
+/**
+ * 定义了一个 JWT 声明的接口
+ * 该接口包含了 JWT 中常见的声明字段
+ */
 export interface JwtClaims {
+  /**
+   * 用户的唯一标识符
+   */
   id: string;
+  /**
+   * 会话标识符，用于标识会话
+   */
   sid: string;
+  /**
+   * 用户数据，通常是一个包含用户信息的对象
+   */
   data: YaoRecord;
+  /**
+   * 受众，标识 JWT 的接收者
+   */
   aud?: string;
+  /**
+   * 过期时间，标识 JWT 的过期时间戳
+   */
   exp?: number;
+  /**
+   * JWT ID，用于标识 JWT 的唯一性
+   */
   jti?: string;
+  /**
+   * 签发时间，标识 JWT 的签发时间戳
+   */
   iat?: number;
+  /**
+   * 签发者，标识 JWT 的签发者
+   */
   iss?: string;
+  /**
+   * 生效时间，标识 JWT 开始生效的时间戳
+   */
   nbf?: number;
+  /**
+   * 主题，通常用于标识 JWT 的主题
+   */
   sub?: string;
 }
 

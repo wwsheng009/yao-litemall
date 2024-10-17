@@ -1,5 +1,6 @@
 import { Process } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
+import { IAppLitemallGoods } from '../goods';
 
 /**
  * Model=> app.litemall.goods.specification (app.litemall.goods.specification)
@@ -24,7 +25,7 @@ export interface IAppLitemallGoodsSpecification {
   /**更新时间 */
   updated_at?: Date;
   /** Relation: goods=> app.litemall.goods */
-  goods?: app_litemall_goods;
+  goods?: IAppLitemallGoods;
 }
 
 export class AppLitemallGoodsSpecificationService {

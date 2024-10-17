@@ -1,5 +1,10 @@
 import { Process } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
+import { IAppLitemallBrand } from './brand';
+import { IAppLitemallCategory } from './category';
+import { IAppLitemallGoodsAttribute } from './goods/attribute';
+import { IAppLitemallGoodsProduct } from './goods/product';
+import { IAppLitemallGoodsSpecification } from './goods/specification';
 
 /**
  * Model=> app.litemall.goods (app.litemall.goods)
@@ -48,15 +53,15 @@ export interface IAppLitemallGoods {
   /**更新时间 */
   updated_at?: Date;
   /** Relation: attributes=> app.litemall.goods.attribute */
-  attributes?: app_litemall_goods_attribute[];
+  attributes?: IAppLitemallGoodsAttribute[];
   /** Relation: products=> app.litemall.goods.product */
-  products?: app_litemall_goods_product[];
+  products?: IAppLitemallGoodsProduct[];
   /** Relation: specifications=> app.litemall.goods.specification */
-  specifications?: app_litemall_goods_specification[];
+  specifications?: IAppLitemallGoodsSpecification[];
   /** Relation: brand=> app.litemall.brand */
-  brand?: app_litemall_brand;
+  brand?: IAppLitemallBrand;
   /** Relation: category=> app.litemall.category */
-  category?: app_litemall_category;
+  category?: IAppLitemallCategory;
 }
 
 export class AppLitemallGoodsService {

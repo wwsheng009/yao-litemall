@@ -1,7 +1,9 @@
-import { Process } from '@yaoapps/client';
-import { YaoQueryParam } from '@yaoapps/types';
 import { LiteMallResPonse, catelogInfo } from './type';
 import { apiWrapper } from '@scripts/serivce/utils';
+import {
+  AppLitemallCategoryService,
+  IAppLitemallCategory
+} from '@scripts/db_services/app/litemall/category';
 
 /**
  * 首页的分类数据
@@ -13,11 +15,7 @@ export function index(id: number): LiteMallResPonse<catelogInfo> {
 
   if (Array.isArray(categoryList) && categoryList.length) {
     const myId = id ? id : categoryList[0].id;
-    const currentCategory = Process(
-      'models.app.litemall.category.find',
-      myId,
-      {}
-    );
+    const currentCategory = AppLitemallCategoryService.Find(myId, {});
     const currentSubCategory = getsecondcategory(myId);
 
     return apiWrapper({
@@ -40,12 +38,12 @@ export function index(id: number): LiteMallResPonse<catelogInfo> {
  * @returns 当前分类栏目
  */
 export function current(id: number) {
-  const currentCategory = Process('models.app.litemall.category.find', id, {});
-  const currentSubCategory = Process('models.app.litemall.category.get', {
+  const currentCategory = AppLitemallCategoryService.Find(id, {});
+  const currentSubCategory = AppLitemallCategoryService.Get({
     select: [],
     wheres: [{ column: 'pid', value: currentCategory.id }],
     limit: 10
-  } as YaoQueryParam.QueryParam);
+  });
 
   return apiWrapper({
     currentSubCategory,
@@ -61,20 +59,20 @@ export function current(id: number) {
  */
 export function all() {
   const outPut = {
-    categoryList: [],
-    alllist: [],
-    currentCategory: {} as { id: number },
-    currentSubCategory: []
+    categoryList: [] as IAppLitemallCategory[],
+    alllist: [] as IAppLitemallCategory[],
+    currentCategory: {} as IAppLitemallCategory,
+    currentSubCategory: [] as IAppLitemallCategory[]
   };
 
-  const all = Process('models.app.litemall.category.get', {
+  const all = AppLitemallCategoryService.Get({
     withs: { subItems: {} },
     wheres: [
       { column: 'level', value: 'L1' },
       { column: 'deleted_at', op: 'null' }
     ],
     limit: 10000
-  } as YaoQueryParam.QueryParam);
+  });
 
   all.forEach((line, idx: number) => {
     const currentItem = { ...line };
@@ -94,21 +92,6 @@ export function all() {
     }
   });
 
-  // outPut.categoryList = getfirstcategory();
-
-  // outPut.categoryList.forEach((l1item) => {
-  //   const subItems = getsecondcategory(l1item.id);
-  //   outPut.alllist.push(l1item);
-  //   subItems.forEach((l2item) => {
-  //     outPut.alllist.push(l2item);
-  //   });
-  // });
-  // // 当前一级分类目录
-  // outPut.currentCategory = outPut.alllist[0];
-  // // 当前一级分类目录对应的二级分类目录
-
-  // outPut.currentSubCategory = getsecondcategory(outPut.currentCategory.id);
-
   return outPut;
 }
 
@@ -116,26 +99,26 @@ export function all() {
  * 获取一级分类
  */
 export function getfirstcategory() {
-  const categoryList = Process('models.app.litemall.category.get', {
+  const categoryList = AppLitemallCategoryService.Get({
     select: [],
     wheres: [
       { column: 'level', value: 'L1' },
       { column: 'deleted_at', op: 'null' }
     ],
     limit: 10000
-  } as YaoQueryParam.QueryParam);
+  });
 
   return categoryList;
 }
 export function getsecondcategory(id: number) {
-  const currentSubCategory = Process('models.app.litemall.category.get', {
+  const currentSubCategory = AppLitemallCategoryService.Get({
     select: [],
     wheres: [
       { column: 'pid', value: id },
       { column: 'deleted_at', op: 'null' }
     ],
     limit: 10000
-  } as YaoQueryParam.QueryParam);
+  });
   return currentSubCategory;
 }
 
@@ -144,7 +127,7 @@ export function getsecondcategory(id: number) {
  * @returns L1分类
  */
 export function getCategoryListL1() {
-  const channelList = Process('models.app.litemall.category.get', {
+  const channelList = AppLitemallCategoryService.Get({
     select: ['id', 'name', 'icon_url'],
     wheres: [
       { column: 'level', value: 'L1' },
@@ -152,17 +135,17 @@ export function getCategoryListL1() {
     ],
 
     limit: 10000
-  } as YaoQueryParam.QueryParam);
+  });
 
   return channelList;
 }
 
 export function categoryFindById(id: number) {
-  const category = Process('models.app.litemall.category.find', id, {
+  const category = AppLitemallCategoryService.Find(id, {
     select: [],
     wheres: [{ column: 'deleted_at', op: 'null' }],
     limit: 10000
-  } as YaoQueryParam.QueryParam);
+  });
   return category;
 }
 
@@ -175,7 +158,7 @@ export function categoryQueryByPid(pid: number) {
  *
  * 这个函数用于根据提供的 ID 列表查询二级分类。它会返回一个包含所有匹配的二级分类的数组。
  *
- * yao run scripts.mobile.app.litemall.mobile.catelog.queryL2ByIds 1,2,3
+ * yao run scripts.mobile.app.litemall.catelog.queryL2ByIds 1,2,3
  *
  * @param ids - 要查询的分类 ID 列表
  * @returns 一个包含所有匹配的二级分类的数组
@@ -190,7 +173,7 @@ export function queryL2ByIds(ids: number[]) {
     return [];
   }
 
-  return Process('models.app.litemall.category.get', {
+  return AppLitemallCategoryService.Get({
     select: [],
     wheres: [
       { column: 'id', op: 'in', value: ids },

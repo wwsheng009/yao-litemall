@@ -109,20 +109,20 @@ export function getArrayItem(
  * 转换URL查询对象成YAO的QueryParam对象
  * @param {object} modelIn 模型定义
  * @param {object} querysIn URL查询对象
- * @param {object} queryParams yao解析的queryParams
+ * @param {object} queryParamsIn Yao查询参数对象
  * @returns 返回Yao QueryParam
  */
 export function queryToQueryParam(
   modelIn: ModelId | YaoModel.ModelDSL,
   querysIn: QueryObjectIn,
-  queryParams?: YaoQueryParam.QueryParam
+  queryParamsIn?: YaoQueryParam.QueryParam
 ) {
-  if (querysIn == null && queryParams == null) {
+  if (querysIn == null && queryParamsIn == null) {
     return {};
   }
   const querys = querysIn || {};
   // 查询条件
-  const queryParam = queryParams || {};
+  const queryParam = queryParamsIn || {};
   const orders = [];
   const wheres = [];
   // 根据url参数信息，构造yao的查询条件

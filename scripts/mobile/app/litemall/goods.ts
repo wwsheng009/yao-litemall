@@ -11,8 +11,10 @@ import {
   queryL2ByIds as categoryQueryL2ByIds
 } from './catelog';
 import { apiWrapper, convertKeysToSnakeCase } from '@scripts/serivce/utils';
-import { YaoQuery, YaoQueryParam } from '@yaoapps/types';
+import { YaoQuery } from '@yaoapps/types';
 import { AppLitemallGoodsService } from '@scripts/db_services/app/litemall/goods';
+import { AppLitemallBrandService } from '@scripts/db_services/app/litemall/brand';
+import { AppLitemallGrouponRulesService } from '@scripts/db_services/app/litemall/groupon/rules';
 
 /**
  * 在售的商品总数
@@ -111,12 +113,12 @@ function getCategoryIds(
 }
 // getCategoryIds('', '', 1, 1);
 
-function findSubItemById(attributeName, id) {
+function findSubItemById(attributeName: string, id: number) {
   const data = Process(`models.app.litemall.goods.${attributeName}.get`, {
     select: [],
     wheres: [{ column: 'goods_id', value: id }],
     limit: 1000
-  } as YaoQueryParam.QueryParam);
+  });
 
   return updateOutputData(`app.litemall.goods.${attributeName}`, data);
 }
@@ -183,13 +185,13 @@ export function detail(id: number) {
   });
   let brand = {};
   try {
-    brand = Process('models.app.litemall.brand.find', info.brand_id, {});
+    brand = AppLitemallBrandService.Find(info.brand_id, {});
     if (brand) {
       brand = updateOutputData('app.litemall.brand', brand);
     }
   } catch (error) {}
 
-  const groupon = Process('models.app.litemall.groupon.rules.get', {
+  const groupon = AppLitemallGrouponRulesService.Get({
     wheres: [
       { column: 'goods_id', value: id },
       { column: 'status', value: 0 }

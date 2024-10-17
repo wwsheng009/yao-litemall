@@ -32,7 +32,7 @@ export interface IAppLitemallCategory {
   /**更新时间 */
   updated_at?: Date;
   /** Relation: subItems=> app.litemall.category */
-  subItems?: app_litemall_category[];
+  subItems?: IAppLitemallCategory[];
 }
 
 export class AppLitemallCategoryService {
