@@ -6,7 +6,7 @@ function resolve(dir = '') {
 
 module.exports = {
   publicPath: './',
-  outputDir: 'dist',
+  outputDir: '../litemall-api/public/mobile',
   assetsDir: 'static',
   productionSourceMap: false,
   devServer: {

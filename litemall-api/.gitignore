@@ -7,10 +7,7 @@ data/pages_temp
 data/upload
 data/dev
 amis.json
-public/soy-admin
-public/amis-editor
-public/amis
-public/pdfjs
+public/mobile
 data/templates
 data/blogs/**/.tmp
 .env
