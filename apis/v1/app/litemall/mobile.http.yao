@@ -286,7 +286,7 @@
             "description": "获取购物车的数据",
             "path": "/cart/index",
             "method": "get",
-            "guard": "-",
+            "guard": "scripts.auth.token.TrySetToken",
             "process": "scripts.mobile.app.litemall.cart.index",
             "in": [],
             "out": {
@@ -300,7 +300,7 @@
             "description": "添加商品到购物车",
             "path": "/cart/add",
             "method": "post",
-            "guard": "-",
+            "guard": "scripts.auth.token.TrySetToken",
             "process": "scripts.mobile.app.litemall.cart.add",
             "in": [
                 ":payload"
@@ -380,7 +380,7 @@
             "description": "获取购物车商品件数",
             "path": "/cart/goodscount",
             "method": "get",
-            "guard": "-",
+            "guard": "scripts.auth.token.TrySetToken",
             "process": "scripts.mobile.app.litemall.cart.goodscount",
             "in": [],
             "out": {

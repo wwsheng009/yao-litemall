@@ -845,10 +845,16 @@ export class SessionProxy {
     return Process(`session.id`);
   }
   static Get(id: string, sesstionId?: string): string {
-    return Process(`session.Get`, id, sesstionId);
+    if (sesstionId) {
+      return Process(`session.Get`, id, sesstionId);
+    }
+    return Process(`session.Get`, id);
   }
   static Del(id: string, sesstionId?: string): string {
-    return Process(`session.Del`, id, sesstionId);
+    if (sesstionId) {
+      return Process(`session.Del`, id, sesstionId);
+    }
+    return Process(`session.Del`, id);
   }
 
   static Set(
@@ -863,13 +869,22 @@ export class SessionProxy {
     return Process(`session.Dump`);
   }
   static GetMany(ids: string[], sesstionId?: string): string {
-    return Process(`session.GetMany`, ids, sesstionId);
+    if (sesstionId) {
+      return Process(`session.GetMany`, ids, sesstionId);
+    }
+    return Process(`session.GetMany`, ids);
   }
   static SetMany(obj: YaoRecord, timeout: number, sesstionId?: string): string {
-    return Process(`session.SetMany`, obj, timeout, sesstionId);
+    if (sesstionId) {
+      return Process(`session.SetMany`, obj, timeout, sesstionId);
+    }
+    return Process(`session.SetMany`, obj, timeout);
   }
   static DelMany(ids: string[], sesstionId?: string): string {
-    return Process(`session.DelMany`, ids, sesstionId);
+    if (sesstionId) {
+      return Process(`session.DelMany`, ids, sesstionId);
+    }
+    return Process(`session.DelMany`, ids);
   }
 }
 

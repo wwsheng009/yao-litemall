@@ -24,7 +24,7 @@ export interface IAppLitemallCart {
   /**商品数量 */
   number?: number;
   /**商品规格值列表 */
-  specifications?: any;
+  specifications?: string[];
   /**否选择状态 */
   checked?: boolean;
   /**商品图片 */

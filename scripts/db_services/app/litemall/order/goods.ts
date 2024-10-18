@@ -24,7 +24,7 @@ export interface IAppLitemallOrderGoods {
   /**售价 */
   price?: number;
   /**规格列表 */
-  specifications: string;
+  specifications: string[];
   /**货品图片 */
   pic_url?: string;
   /**订单商品评论 */

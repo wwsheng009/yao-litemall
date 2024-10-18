@@ -1,5 +1,10 @@
 import { Process } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
+import { IAppLitemallBrand } from './brand';
+import { IAppLitemallCategory } from './category';
+import { IAppLitemallGoodsAttribute } from './goods/attribute';
+import { IAppLitemallGoodsProduct } from './goods/product';
+import { IAppLitemallGoodsSpecification } from './goods/specification';
 
 /**
  * Model=> app.litemall.goods (app.litemall.goods)

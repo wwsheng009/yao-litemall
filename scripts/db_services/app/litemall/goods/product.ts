@@ -12,7 +12,7 @@ export interface IAppLitemallGoodsProduct {
   /**商品ID */
   goods_id?: number;
   /**商品规格值列表 */
-  specifications: any;
+  specifications: string[];
   /**商品货品价格 */
   price?: number;
   /**商品货品数量 */

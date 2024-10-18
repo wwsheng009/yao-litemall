@@ -31,7 +31,7 @@ export function count() {
       { field: 'is_on_sale', op: '=', value: 1 }
     ]
   } as YaoQuery.QueryDSL);
-  return rec.total;
+  return parseInt(rec.total);
 }
 
 /**
