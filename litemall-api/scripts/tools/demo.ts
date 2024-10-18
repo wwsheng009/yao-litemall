@@ -2,8 +2,8 @@ import { Process, Query } from '@yaoapps/client';
 
 //this is a script to copy the data from different database.
 
-//yao run scripts.app.litemall.demo.copyData litemall_coupon app.litemall.coupon
-function copyData(source: string, targetModel: string) {
+//yao run scripts.tools.demo.copyTableData litemall_coupon app.litemall.coupon
+function copyTableData(source: string, targetModel: string) {
   const query = new Query('mysql');
   const data = query.Get({
     sql: {
@@ -23,8 +23,8 @@ function copyData(source: string, targetModel: string) {
   console.log(`table ${source} copied success, total: ${rows.length}`);
 }
 
-//yao run scripts.app.litemall.demo.copyTableList
-export function copyTableList() {
+//yao run scripts.tools.demo.copyAllTableData
+export function copyAllTableData() {
   const query = new Query('mysql');
 
   const data = query.Get({
@@ -39,6 +39,6 @@ export function copyTableList() {
 
   tableList.forEach((tab) => {
     const modelName = 'app.' + tab.replaceAll('_', '.');
-    copyData(tab, modelName);
+    copyTableData(tab, modelName);
   });
 }
