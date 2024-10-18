@@ -24,7 +24,7 @@ export interface IAppLitemallTopic {
   /**排序 */
   sort_order?: number;
   /**专题相关商品 */
-  goods?: number[];
+  goods?: any;
   /**删除时间 */
   deleted_at?: Date;
   /**创建时间 */
@@ -34,20 +34,20 @@ export interface IAppLitemallTopic {
 }
 
 export class AppLitemallTopicService {
-  static FieldNames = [
-    'id',
-    'title',
-    'subtitle',
-    'content',
-    'price',
-    'read_count',
-    'pic_url',
-    'sort_order',
-    'goods',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    title: 'title',
+    subtitle: 'subtitle',
+    content: 'content',
+    price: 'price',
+    read_count: 'read_count',
+    pic_url: 'pic_url',
+    sort_order: 'sort_order',
+    goods: 'goods',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.topic';
   static TableName = 'app_litemall_topic';
 
@@ -56,33 +56,42 @@ export class AppLitemallTopicService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallTopic
     */
-  static Find(key: number, where: YaoQueryParam.QueryParam): IAppLitemallTopic {
-    return Process('models.app.litemall.topic.find', key, where);
+  static Find(key: number, query: YaoQueryParam.QueryParam): IAppLitemallTopic {
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallTopic[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallTopic[] {
-    return Process('models.app.litemall.topic.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallTopic[] {
+    return Process(`models.${AppLitemallTopicService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallTopic>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallTopic> {
-    return Process('models.app.litemall.topic.Paginate', where, page, perPage);
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.Paginate`,
+      query,
+      page,
+      perPage
+    );
   }
 
   /**
@@ -91,7 +100,7 @@ export class AppLitemallTopicService {
    * @returns
    */
   static Create(data: IAppLitemallTopic): number {
-    return Process('models.app.litemall.topic.create', data);
+    return Process(`models.${AppLitemallTopicService.ModelID}.create`, data);
   }
 
   /**
@@ -101,7 +110,11 @@ export class AppLitemallTopicService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.topic.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -110,7 +123,7 @@ export class AppLitemallTopicService {
    * @returns
    */
   static Save(data: IAppLitemallTopic): number {
-    return Process('models.app.litemall.topic.Save', data);
+    return Process(`models.${AppLitemallTopicService.ModelID}.Save`, data);
   }
 
   /**
@@ -120,17 +133,25 @@ export class AppLitemallTopicService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallTopic) {
-    return Process('models.app.litemall.topic.Update', key, line);
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
-  static UpdateWhere(where: YaoQueryParam.QueryParam, line: IAppLitemallTopic) {
-    return Process('models.app.litemall.topic.UpdateWhere', where, line);
+  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAppLitemallTopic) {
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -140,7 +161,11 @@ export class AppLitemallTopicService {
    * @returns
    */
   static EachSave(data: IAppLitemallTopic[], line: IAppLitemallTopic) {
-    return Process('models.app.litemall.topic.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -156,7 +181,7 @@ export class AppLitemallTopicService {
     line: IAppLitemallTopic
   ) {
     return Process(
-      'models.app.litemall.topic.EachSaveAfterDelete',
+      `models.${AppLitemallTopicService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -169,16 +194,19 @@ export class AppLitemallTopicService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.topic.Delete', key);
+    return Process(`models.${AppLitemallTopicService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.topic.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -187,15 +215,18 @@ export class AppLitemallTopicService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.topic.Destroy', key);
+    return Process(`models.${AppLitemallTopicService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.topic.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallTopicService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

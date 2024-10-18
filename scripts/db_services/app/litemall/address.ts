@@ -38,22 +38,22 @@ export interface IAppLitemallAddress {
 }
 
 export class AppLitemallAddressService {
-  static FieldNames = [
-    'id',
-    'name',
-    'user_id',
-    'province',
-    'city',
-    'county',
-    'address_detail',
-    'area_code',
-    'postal_code',
-    'tel',
-    'is_default',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    name: 'name',
+    user_id: 'user_id',
+    province: 'province',
+    city: 'city',
+    county: 'county',
+    address_detail: 'address_detail',
+    area_code: 'area_code',
+    postal_code: 'postal_code',
+    tel: 'tel',
+    is_default: 'is_default',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.address';
   static TableName = 'app_litemall_address';
 
@@ -62,38 +62,42 @@ export class AppLitemallAddressService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallAddress
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallAddress {
-    return Process('models.app.litemall.address.find', key, where);
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallAddress[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallAddress[] {
-    return Process('models.app.litemall.address.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallAddress[] {
+    return Process(`models.${AppLitemallAddressService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallAddress>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallAddress> {
     return Process(
-      'models.app.litemall.address.Paginate',
-      where,
+      `models.${AppLitemallAddressService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -105,7 +109,7 @@ export class AppLitemallAddressService {
    * @returns
    */
   static Create(data: IAppLitemallAddress): number {
-    return Process('models.app.litemall.address.create', data);
+    return Process(`models.${AppLitemallAddressService.ModelID}.create`, data);
   }
 
   /**
@@ -115,7 +119,11 @@ export class AppLitemallAddressService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.address.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -124,7 +132,7 @@ export class AppLitemallAddressService {
    * @returns
    */
   static Save(data: IAppLitemallAddress): number {
-    return Process('models.app.litemall.address.Save', data);
+    return Process(`models.${AppLitemallAddressService.ModelID}.Save`, data);
   }
 
   /**
@@ -134,20 +142,28 @@ export class AppLitemallAddressService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallAddress) {
-    return Process('models.app.litemall.address.Update', key, line);
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallAddress
   ) {
-    return Process('models.app.litemall.address.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -157,7 +173,11 @@ export class AppLitemallAddressService {
    * @returns
    */
   static EachSave(data: IAppLitemallAddress[], line: IAppLitemallAddress) {
-    return Process('models.app.litemall.address.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -173,7 +193,7 @@ export class AppLitemallAddressService {
     line: IAppLitemallAddress
   ) {
     return Process(
-      'models.app.litemall.address.EachSaveAfterDelete',
+      `models.${AppLitemallAddressService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -186,16 +206,19 @@ export class AppLitemallAddressService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.address.Delete', key);
+    return Process(`models.${AppLitemallAddressService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.address.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -204,15 +227,18 @@ export class AppLitemallAddressService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.address.Destroy', key);
+    return Process(`models.${AppLitemallAddressService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.address.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallAddressService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

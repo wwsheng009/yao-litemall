@@ -72,39 +72,39 @@ export interface IAppLitemallOrder {
 }
 
 export class AppLitemallOrderService {
-  static FieldNames = [
-    'id',
-    'user_id',
-    'order_sn',
-    'order_status',
-    'aftersale_status',
-    'consignee',
-    'mobile',
-    'address',
-    'message',
-    'goods_price',
-    'freight_price',
-    'coupon_price',
-    'integral_price',
-    'groupon_price',
-    'order_price',
-    'actual_price',
-    'pay_id',
-    'pay_time',
-    'ship_sn',
-    'ship_channel',
-    'ship_time',
-    'refund_amount',
-    'refund_type',
-    'refund_content',
-    'refund_time',
-    'confirm_time',
-    'comments',
-    'end_time',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    user_id: 'user_id',
+    order_sn: 'order_sn',
+    order_status: 'order_status',
+    aftersale_status: 'aftersale_status',
+    consignee: 'consignee',
+    mobile: 'mobile',
+    address: 'address',
+    message: 'message',
+    goods_price: 'goods_price',
+    freight_price: 'freight_price',
+    coupon_price: 'coupon_price',
+    integral_price: 'integral_price',
+    groupon_price: 'groupon_price',
+    order_price: 'order_price',
+    actual_price: 'actual_price',
+    pay_id: 'pay_id',
+    pay_time: 'pay_time',
+    ship_sn: 'ship_sn',
+    ship_channel: 'ship_channel',
+    ship_time: 'ship_time',
+    refund_amount: 'refund_amount',
+    refund_type: 'refund_type',
+    refund_content: 'refund_content',
+    refund_time: 'refund_time',
+    confirm_time: 'confirm_time',
+    comments: 'comments',
+    end_time: 'end_time',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.order';
   static TableName = 'app_litemall_order';
 
@@ -113,33 +113,42 @@ export class AppLitemallOrderService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallOrder
     */
-  static Find(key: number, where: YaoQueryParam.QueryParam): IAppLitemallOrder {
-    return Process('models.app.litemall.order.find', key, where);
+  static Find(key: number, query: YaoQueryParam.QueryParam): IAppLitemallOrder {
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallOrder[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallOrder[] {
-    return Process('models.app.litemall.order.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallOrder[] {
+    return Process(`models.${AppLitemallOrderService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallOrder>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallOrder> {
-    return Process('models.app.litemall.order.Paginate', where, page, perPage);
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.Paginate`,
+      query,
+      page,
+      perPage
+    );
   }
 
   /**
@@ -148,7 +157,7 @@ export class AppLitemallOrderService {
    * @returns
    */
   static Create(data: IAppLitemallOrder): number {
-    return Process('models.app.litemall.order.create', data);
+    return Process(`models.${AppLitemallOrderService.ModelID}.create`, data);
   }
 
   /**
@@ -158,7 +167,11 @@ export class AppLitemallOrderService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.order.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -167,7 +180,7 @@ export class AppLitemallOrderService {
    * @returns
    */
   static Save(data: IAppLitemallOrder): number {
-    return Process('models.app.litemall.order.Save', data);
+    return Process(`models.${AppLitemallOrderService.ModelID}.Save`, data);
   }
 
   /**
@@ -177,17 +190,25 @@ export class AppLitemallOrderService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallOrder) {
-    return Process('models.app.litemall.order.Update', key, line);
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
-  static UpdateWhere(where: YaoQueryParam.QueryParam, line: IAppLitemallOrder) {
-    return Process('models.app.litemall.order.UpdateWhere', where, line);
+  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAppLitemallOrder) {
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -197,7 +218,11 @@ export class AppLitemallOrderService {
    * @returns
    */
   static EachSave(data: IAppLitemallOrder[], line: IAppLitemallOrder) {
-    return Process('models.app.litemall.order.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -213,7 +238,7 @@ export class AppLitemallOrderService {
     line: IAppLitemallOrder
   ) {
     return Process(
-      'models.app.litemall.order.EachSaveAfterDelete',
+      `models.${AppLitemallOrderService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -226,16 +251,19 @@ export class AppLitemallOrderService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.order.Delete', key);
+    return Process(`models.${AppLitemallOrderService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.order.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -244,15 +272,18 @@ export class AppLitemallOrderService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.order.Destroy', key);
+    return Process(`models.${AppLitemallOrderService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.order.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallOrderService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

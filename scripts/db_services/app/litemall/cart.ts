@@ -24,7 +24,7 @@ export interface IAppLitemallCart {
   /**商品数量 */
   number?: number;
   /**商品规格值列表 */
-  specifications?: object;
+  specifications?: any;
   /**否选择状态 */
   checked?: boolean;
   /**商品图片 */
@@ -38,22 +38,22 @@ export interface IAppLitemallCart {
 }
 
 export class AppLitemallCartService {
-  static FieldNames = [
-    'id',
-    'user_id',
-    'goods_id',
-    'goods_sn',
-    'goods_name',
-    'product_id',
-    'price',
-    'number',
-    'specifications',
-    'checked',
-    'pic_url',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    user_id: 'user_id',
+    goods_id: 'goods_id',
+    goods_sn: 'goods_sn',
+    goods_name: 'goods_name',
+    product_id: 'product_id',
+    price: 'price',
+    number: 'number',
+    specifications: 'specifications',
+    checked: 'checked',
+    pic_url: 'pic_url',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.cart';
   static TableName = 'app_litemall_cart';
 
@@ -62,33 +62,38 @@ export class AppLitemallCartService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallCart
     */
-  static Find(key: number, where: YaoQueryParam.QueryParam): IAppLitemallCart {
-    return Process('models.app.litemall.cart.find', key, where);
+  static Find(key: number, query: YaoQueryParam.QueryParam): IAppLitemallCart {
+    return Process(`models.${AppLitemallCartService.ModelID}.find`, key, query);
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallCart[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallCart[] {
-    return Process('models.app.litemall.cart.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallCart[] {
+    return Process(`models.${AppLitemallCartService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallCart>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallCart> {
-    return Process('models.app.litemall.cart.Paginate', where, page, perPage);
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.Paginate`,
+      query,
+      page,
+      perPage
+    );
   }
 
   /**
@@ -97,7 +102,7 @@ export class AppLitemallCartService {
    * @returns
    */
   static Create(data: IAppLitemallCart): number {
-    return Process('models.app.litemall.cart.create', data);
+    return Process(`models.${AppLitemallCartService.ModelID}.create`, data);
   }
 
   /**
@@ -107,7 +112,11 @@ export class AppLitemallCartService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.cart.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -116,7 +125,7 @@ export class AppLitemallCartService {
    * @returns
    */
   static Save(data: IAppLitemallCart): number {
-    return Process('models.app.litemall.cart.Save', data);
+    return Process(`models.${AppLitemallCartService.ModelID}.Save`, data);
   }
 
   /**
@@ -126,17 +135,25 @@ export class AppLitemallCartService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallCart) {
-    return Process('models.app.litemall.cart.Update', key, line);
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
-  static UpdateWhere(where: YaoQueryParam.QueryParam, line: IAppLitemallCart) {
-    return Process('models.app.litemall.cart.UpdateWhere', where, line);
+  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAppLitemallCart) {
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -146,7 +163,11 @@ export class AppLitemallCartService {
    * @returns
    */
   static EachSave(data: IAppLitemallCart[], line: IAppLitemallCart) {
-    return Process('models.app.litemall.cart.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -162,7 +183,7 @@ export class AppLitemallCartService {
     line: IAppLitemallCart
   ) {
     return Process(
-      'models.app.litemall.cart.EachSaveAfterDelete',
+      `models.${AppLitemallCartService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -175,16 +196,19 @@ export class AppLitemallCartService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.cart.Delete', key);
+    return Process(`models.${AppLitemallCartService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.cart.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -193,15 +217,18 @@ export class AppLitemallCartService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.cart.Destroy', key);
+    return Process(`models.${AppLitemallCartService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.cart.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCartService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

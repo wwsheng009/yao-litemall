@@ -44,25 +44,25 @@ export interface IAppLitemallUser {
 }
 
 export class AppLitemallUserService {
-  static FieldNames = [
-    'id',
-    'username',
-    'password',
-    'gender',
-    'birthday',
-    'last_login_time',
-    'last_login_ip',
-    'user_level',
-    'nickname',
-    'mobile',
-    'avatar',
-    'weixin_openid',
-    'session_key',
-    'status',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    username: 'username',
+    password: 'password',
+    gender: 'gender',
+    birthday: 'birthday',
+    last_login_time: 'last_login_time',
+    last_login_ip: 'last_login_ip',
+    user_level: 'user_level',
+    nickname: 'nickname',
+    mobile: 'mobile',
+    avatar: 'avatar',
+    weixin_openid: 'weixin_openid',
+    session_key: 'session_key',
+    status: 'status',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.user';
   static TableName = 'app_litemall_user';
 
@@ -71,33 +71,38 @@ export class AppLitemallUserService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallUser
     */
-  static Find(key: number, where: YaoQueryParam.QueryParam): IAppLitemallUser {
-    return Process('models.app.litemall.user.find', key, where);
+  static Find(key: number, query: YaoQueryParam.QueryParam): IAppLitemallUser {
+    return Process(`models.${AppLitemallUserService.ModelID}.find`, key, query);
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallUser[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallUser[] {
-    return Process('models.app.litemall.user.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallUser[] {
+    return Process(`models.${AppLitemallUserService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallUser>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallUser> {
-    return Process('models.app.litemall.user.Paginate', where, page, perPage);
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.Paginate`,
+      query,
+      page,
+      perPage
+    );
   }
 
   /**
@@ -106,7 +111,7 @@ export class AppLitemallUserService {
    * @returns
    */
   static Create(data: IAppLitemallUser): number {
-    return Process('models.app.litemall.user.create', data);
+    return Process(`models.${AppLitemallUserService.ModelID}.create`, data);
   }
 
   /**
@@ -116,7 +121,11 @@ export class AppLitemallUserService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.user.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -125,7 +134,7 @@ export class AppLitemallUserService {
    * @returns
    */
   static Save(data: IAppLitemallUser): number {
-    return Process('models.app.litemall.user.Save', data);
+    return Process(`models.${AppLitemallUserService.ModelID}.Save`, data);
   }
 
   /**
@@ -135,17 +144,25 @@ export class AppLitemallUserService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallUser) {
-    return Process('models.app.litemall.user.Update', key, line);
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
-  static UpdateWhere(where: YaoQueryParam.QueryParam, line: IAppLitemallUser) {
-    return Process('models.app.litemall.user.UpdateWhere', where, line);
+  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAppLitemallUser) {
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -155,7 +172,11 @@ export class AppLitemallUserService {
    * @returns
    */
   static EachSave(data: IAppLitemallUser[], line: IAppLitemallUser) {
-    return Process('models.app.litemall.user.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -171,7 +192,7 @@ export class AppLitemallUserService {
     line: IAppLitemallUser
   ) {
     return Process(
-      'models.app.litemall.user.EachSaveAfterDelete',
+      `models.${AppLitemallUserService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -184,16 +205,19 @@ export class AppLitemallUserService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.user.Delete', key);
+    return Process(`models.${AppLitemallUserService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.user.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -202,15 +226,18 @@ export class AppLitemallUserService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.user.Destroy', key);
+    return Process(`models.${AppLitemallUserService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.user.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallUserService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

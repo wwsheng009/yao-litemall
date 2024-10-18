@@ -28,7 +28,7 @@ export interface IAdminUser {
   /**API 密钥 */
   secret?: string;
   /**扩展信息 */
-  extra?: object;
+  extra?: any;
   /**状态 */
   status?: 'enabled' | 'disabled';
   /**删除时间 */
@@ -40,23 +40,23 @@ export interface IAdminUser {
 }
 
 export class AdminUserService {
-  static FieldNames = [
-    'id',
-    'type',
-    'email',
-    'mobile',
-    'password',
-    'password2nd',
-    'name',
-    'idcard',
-    'key',
-    'secret',
-    'extra',
-    'status',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    type: 'type',
+    email: 'email',
+    mobile: 'mobile',
+    password: 'password',
+    password2nd: 'password2nd',
+    name: 'name',
+    idcard: 'idcard',
+    key: 'key',
+    secret: 'secret',
+    extra: 'extra',
+    status: 'status',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'admin.user';
   static TableName = 'admin_user';
 
@@ -65,33 +65,38 @@ export class AdminUserService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAdminUser
     */
-  static Find(key: string, where: YaoQueryParam.QueryParam): IAdminUser {
-    return Process('models.admin.user.find', key, where);
+  static Find(key: string, query: YaoQueryParam.QueryParam): IAdminUser {
+    return Process(`models.${AdminUserService.ModelID}.find`, key, query);
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAdminUser[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAdminUser[] {
-    return Process('models.admin.user.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAdminUser[] {
+    return Process(`models.${AdminUserService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAdminUser>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAdminUser> {
-    return Process('models.admin.user.Paginate', where, page, perPage);
+    return Process(
+      `models.${AdminUserService.ModelID}.Paginate`,
+      query,
+      page,
+      perPage
+    );
   }
 
   /**
@@ -100,7 +105,7 @@ export class AdminUserService {
    * @returns
    */
   static Create(data: IAdminUser): number {
-    return Process('models.admin.user.create', data);
+    return Process(`models.${AdminUserService.ModelID}.create`, data);
   }
 
   /**
@@ -110,7 +115,7 @@ export class AdminUserService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.admin.user.Insert', fields, data);
+    return Process(`models.${AdminUserService.ModelID}.Insert`, fields, data);
   }
 
   /**
@@ -119,7 +124,7 @@ export class AdminUserService {
    * @returns
    */
   static Save(data: IAdminUser): number {
-    return Process('models.admin.user.Save', data);
+    return Process(`models.${AdminUserService.ModelID}.Save`, data);
   }
 
   /**
@@ -129,17 +134,21 @@ export class AdminUserService {
    * @returns
    */
   static Update(key: string, line: IAdminUser) {
-    return Process('models.admin.user.Update', key, line);
+    return Process(`models.${AdminUserService.ModelID}.Update`, key, line);
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
-  static UpdateWhere(where: YaoQueryParam.QueryParam, line: IAdminUser) {
-    return Process('models.admin.user.UpdateWhere', where, line);
+  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAdminUser) {
+    return Process(
+      `models.${AdminUserService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -149,7 +158,7 @@ export class AdminUserService {
    * @returns
    */
   static EachSave(data: IAdminUser[], line: IAdminUser) {
-    return Process('models.admin.user.EachSave', data, line);
+    return Process(`models.${AdminUserService.ModelID}.EachSave`, data, line);
   }
 
   /**
@@ -164,7 +173,12 @@ export class AdminUserService {
     data: IAdminUser[],
     line: IAdminUser
   ) {
-    return Process('models.admin.user.EachSaveAfterDelete', keys, data, line);
+    return Process(
+      `models.${AdminUserService.ModelID}.EachSaveAfterDelete`,
+      keys,
+      data,
+      line
+    );
   }
 
   /**
@@ -173,16 +187,16 @@ export class AdminUserService {
    * @returns
    */
   static Delete(key: string) {
-    return Process('models.admin.user.Delete', key);
+    return Process(`models.${AdminUserService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.admin.user.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(`models.${AdminUserService.ModelID}.DeleteWhere`, query);
   }
 
   /**
@@ -191,15 +205,15 @@ export class AdminUserService {
    * @returns
    */
   static Destroy(key: string) {
-    return Process('models.admin.user.Destroy', key);
+    return Process(`models.${AdminUserService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.admin.user.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(`models.${AdminUserService.ModelID}.DestroyWhere`, query);
   }
 }

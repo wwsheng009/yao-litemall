@@ -1,6 +1,5 @@
 import { Process } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
-import { IAppLitemallGoods } from '../goods';
 
 /**
  * Model=> app.litemall.groupon.rules (app.litemall.groupon.rules)
@@ -35,19 +34,19 @@ export interface IAppLitemallGrouponRules {
 }
 
 export class AppLitemallGrouponRulesService {
-  static FieldNames = [
-    'id',
-    'goods_id',
-    'goods_name',
-    'pic_url',
-    'discount',
-    'discount_member',
-    'expire_time',
-    'status',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    goods_id: 'goods_id',
+    goods_name: 'goods_name',
+    pic_url: 'pic_url',
+    discount: 'discount',
+    discount_member: 'discount_member',
+    expire_time: 'expire_time',
+    status: 'status',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.groupon.rules';
   static TableName = 'app_litemall_groupon_rules';
 
@@ -56,38 +55,45 @@ export class AppLitemallGrouponRulesService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallGrouponRules
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallGrouponRules {
-    return Process('models.app.litemall.groupon.rules.find', key, where);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallGrouponRules[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallGrouponRules[] {
-    return Process('models.app.litemall.groupon.rules.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallGrouponRules[] {
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.get`,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallGrouponRules>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallGrouponRules> {
     return Process(
-      'models.app.litemall.groupon.rules.Paginate',
-      where,
+      `models.${AppLitemallGrouponRulesService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -99,7 +105,10 @@ export class AppLitemallGrouponRulesService {
    * @returns
    */
   static Create(data: IAppLitemallGrouponRules): number {
-    return Process('models.app.litemall.groupon.rules.create', data);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.create`,
+      data
+    );
   }
 
   /**
@@ -109,7 +118,11 @@ export class AppLitemallGrouponRulesService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.groupon.rules.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -118,7 +131,10 @@ export class AppLitemallGrouponRulesService {
    * @returns
    */
   static Save(data: IAppLitemallGrouponRules): number {
-    return Process('models.app.litemall.groupon.rules.Save', data);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Save`,
+      data
+    );
   }
 
   /**
@@ -128,22 +144,26 @@ export class AppLitemallGrouponRulesService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallGrouponRules) {
-    return Process('models.app.litemall.groupon.rules.Update', key, line);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallGrouponRules
   ) {
     return Process(
-      'models.app.litemall.groupon.rules.UpdateWhere',
-      where,
+      `models.${AppLitemallGrouponRulesService.ModelID}.UpdateWhere`,
+      query,
       line
     );
   }
@@ -158,7 +178,11 @@ export class AppLitemallGrouponRulesService {
     data: IAppLitemallGrouponRules[],
     line: IAppLitemallGrouponRules
   ) {
-    return Process('models.app.litemall.groupon.rules.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -174,7 +198,7 @@ export class AppLitemallGrouponRulesService {
     line: IAppLitemallGrouponRules
   ) {
     return Process(
-      'models.app.litemall.groupon.rules.EachSaveAfterDelete',
+      `models.${AppLitemallGrouponRulesService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -187,16 +211,22 @@ export class AppLitemallGrouponRulesService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.groupon.rules.Delete', key);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Delete`,
+      key
+    );
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.groupon.rules.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -205,15 +235,21 @@ export class AppLitemallGrouponRulesService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.groupon.rules.Destroy', key);
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Destroy`,
+      key
+    );
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.groupon.rules.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

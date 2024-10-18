@@ -34,20 +34,20 @@ export interface IAppLitemallGroupon {
 }
 
 export class AppLitemallGrouponService {
-  static FieldNames = [
-    'id',
-    'order_id',
-    'groupon_id',
-    'rules_id',
-    'user_id',
-    'share_url',
-    'creator_user_id',
-    'creator_user_time',
-    'status',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    order_id: 'order_id',
+    groupon_id: 'groupon_id',
+    rules_id: 'rules_id',
+    user_id: 'user_id',
+    share_url: 'share_url',
+    creator_user_id: 'creator_user_id',
+    creator_user_time: 'creator_user_time',
+    status: 'status',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.groupon';
   static TableName = 'app_litemall_groupon';
 
@@ -56,38 +56,42 @@ export class AppLitemallGrouponService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallGroupon
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallGroupon {
-    return Process('models.app.litemall.groupon.find', key, where);
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallGroupon[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallGroupon[] {
-    return Process('models.app.litemall.groupon.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallGroupon[] {
+    return Process(`models.${AppLitemallGrouponService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallGroupon>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallGroupon> {
     return Process(
-      'models.app.litemall.groupon.Paginate',
-      where,
+      `models.${AppLitemallGrouponService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -99,7 +103,7 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static Create(data: IAppLitemallGroupon): number {
-    return Process('models.app.litemall.groupon.create', data);
+    return Process(`models.${AppLitemallGrouponService.ModelID}.create`, data);
   }
 
   /**
@@ -109,7 +113,11 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.groupon.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -118,7 +126,7 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static Save(data: IAppLitemallGroupon): number {
-    return Process('models.app.litemall.groupon.Save', data);
+    return Process(`models.${AppLitemallGrouponService.ModelID}.Save`, data);
   }
 
   /**
@@ -128,20 +136,28 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallGroupon) {
-    return Process('models.app.litemall.groupon.Update', key, line);
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallGroupon
   ) {
-    return Process('models.app.litemall.groupon.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -151,7 +167,11 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static EachSave(data: IAppLitemallGroupon[], line: IAppLitemallGroupon) {
-    return Process('models.app.litemall.groupon.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -167,7 +187,7 @@ export class AppLitemallGrouponService {
     line: IAppLitemallGroupon
   ) {
     return Process(
-      'models.app.litemall.groupon.EachSaveAfterDelete',
+      `models.${AppLitemallGrouponService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -180,16 +200,19 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.groupon.Delete', key);
+    return Process(`models.${AppLitemallGrouponService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.groupon.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -198,15 +221,18 @@ export class AppLitemallGrouponService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.groupon.Destroy', key);
+    return Process(`models.${AppLitemallGrouponService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.groupon.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallGrouponService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

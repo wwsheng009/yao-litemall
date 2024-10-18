@@ -24,7 +24,7 @@ export interface IAppLitemallFeedback {
   /**是否含有图片 */
   has_picture?: boolean;
   /**图片地址列表 */
-  pic_urls?: object;
+  pic_urls?: any;
   /**删除时间 */
   deleted_at?: Date;
   /**创建时间 */
@@ -34,20 +34,20 @@ export interface IAppLitemallFeedback {
 }
 
 export class AppLitemallFeedbackService {
-  static FieldNames = [
-    'id',
-    'user_id',
-    'username',
-    'mobile',
-    'feed_type',
-    'content',
-    'status',
-    'has_picture',
-    'pic_urls',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    user_id: 'user_id',
+    username: 'username',
+    mobile: 'mobile',
+    feed_type: 'feed_type',
+    content: 'content',
+    status: 'status',
+    has_picture: 'has_picture',
+    pic_urls: 'pic_urls',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.feedback';
   static TableName = 'app_litemall_feedback';
 
@@ -56,38 +56,42 @@ export class AppLitemallFeedbackService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallFeedback
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallFeedback {
-    return Process('models.app.litemall.feedback.find', key, where);
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallFeedback[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallFeedback[] {
-    return Process('models.app.litemall.feedback.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallFeedback[] {
+    return Process(`models.${AppLitemallFeedbackService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallFeedback>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallFeedback> {
     return Process(
-      'models.app.litemall.feedback.Paginate',
-      where,
+      `models.${AppLitemallFeedbackService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -99,7 +103,7 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static Create(data: IAppLitemallFeedback): number {
-    return Process('models.app.litemall.feedback.create', data);
+    return Process(`models.${AppLitemallFeedbackService.ModelID}.create`, data);
   }
 
   /**
@@ -109,7 +113,11 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.feedback.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -118,7 +126,7 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static Save(data: IAppLitemallFeedback): number {
-    return Process('models.app.litemall.feedback.Save', data);
+    return Process(`models.${AppLitemallFeedbackService.ModelID}.Save`, data);
   }
 
   /**
@@ -128,20 +136,28 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallFeedback) {
-    return Process('models.app.litemall.feedback.Update', key, line);
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallFeedback
   ) {
-    return Process('models.app.litemall.feedback.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -151,7 +167,11 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static EachSave(data: IAppLitemallFeedback[], line: IAppLitemallFeedback) {
-    return Process('models.app.litemall.feedback.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -167,7 +187,7 @@ export class AppLitemallFeedbackService {
     line: IAppLitemallFeedback
   ) {
     return Process(
-      'models.app.litemall.feedback.EachSaveAfterDelete',
+      `models.${AppLitemallFeedbackService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -180,16 +200,19 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.feedback.Delete', key);
+    return Process(`models.${AppLitemallFeedbackService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.feedback.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -198,15 +221,18 @@ export class AppLitemallFeedbackService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.feedback.Destroy', key);
+    return Process(`models.${AppLitemallFeedbackService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.feedback.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallFeedbackService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

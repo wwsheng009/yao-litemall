@@ -30,7 +30,7 @@ export interface IAppLitemallCoupon {
   /**商品限制类型 */
   goods_type?: number;
   /**商品限制值 */
-  goods_value?: object;
+  goods_value?: any;
   /**优惠券兑换码 */
   code?: string;
   /**有效时间限制 */
@@ -50,28 +50,28 @@ export interface IAppLitemallCoupon {
 }
 
 export class AppLitemallCouponService {
-  static FieldNames = [
-    'id',
-    'name',
-    'desc',
-    'tag',
-    'total',
-    'discount',
-    'min',
-    'limit',
-    'type',
-    'status',
-    'goods_type',
-    'goods_value',
-    'code',
-    'time_type',
-    'days',
-    'start_time',
-    'end_time',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    name: 'name',
+    desc: 'desc',
+    tag: 'tag',
+    total: 'total',
+    discount: 'discount',
+    min: 'min',
+    limit: 'limit',
+    type: 'type',
+    status: 'status',
+    goods_type: 'goods_type',
+    goods_value: 'goods_value',
+    code: 'code',
+    time_type: 'time_type',
+    days: 'days',
+    start_time: 'start_time',
+    end_time: 'end_time',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.coupon';
   static TableName = 'app_litemall_coupon';
 
@@ -80,36 +80,45 @@ export class AppLitemallCouponService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallCoupon
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallCoupon {
-    return Process('models.app.litemall.coupon.find', key, where);
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallCoupon[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallCoupon[] {
-    return Process('models.app.litemall.coupon.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallCoupon[] {
+    return Process(`models.${AppLitemallCouponService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallCoupon>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallCoupon> {
-    return Process('models.app.litemall.coupon.Paginate', where, page, perPage);
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.Paginate`,
+      query,
+      page,
+      perPage
+    );
   }
 
   /**
@@ -118,7 +127,7 @@ export class AppLitemallCouponService {
    * @returns
    */
   static Create(data: IAppLitemallCoupon): number {
-    return Process('models.app.litemall.coupon.create', data);
+    return Process(`models.${AppLitemallCouponService.ModelID}.create`, data);
   }
 
   /**
@@ -128,7 +137,11 @@ export class AppLitemallCouponService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.coupon.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -137,7 +150,7 @@ export class AppLitemallCouponService {
    * @returns
    */
   static Save(data: IAppLitemallCoupon): number {
-    return Process('models.app.litemall.coupon.Save', data);
+    return Process(`models.${AppLitemallCouponService.ModelID}.Save`, data);
   }
 
   /**
@@ -147,20 +160,28 @@ export class AppLitemallCouponService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallCoupon) {
-    return Process('models.app.litemall.coupon.Update', key, line);
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallCoupon
   ) {
-    return Process('models.app.litemall.coupon.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -170,7 +191,11 @@ export class AppLitemallCouponService {
    * @returns
    */
   static EachSave(data: IAppLitemallCoupon[], line: IAppLitemallCoupon) {
-    return Process('models.app.litemall.coupon.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -186,7 +211,7 @@ export class AppLitemallCouponService {
     line: IAppLitemallCoupon
   ) {
     return Process(
-      'models.app.litemall.coupon.EachSaveAfterDelete',
+      `models.${AppLitemallCouponService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -199,16 +224,19 @@ export class AppLitemallCouponService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.coupon.Delete', key);
+    return Process(`models.${AppLitemallCouponService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.coupon.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -217,15 +245,18 @@ export class AppLitemallCouponService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.coupon.Destroy', key);
+    return Process(`models.${AppLitemallCouponService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.coupon.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCouponService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

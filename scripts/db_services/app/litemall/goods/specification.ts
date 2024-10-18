@@ -1,6 +1,5 @@
 import { Process } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
-import { IAppLitemallGoods } from '../goods';
 
 /**
  * Model=> app.litemall.goods.specification (app.litemall.goods.specification)
@@ -29,16 +28,16 @@ export interface IAppLitemallGoodsSpecification {
 }
 
 export class AppLitemallGoodsSpecificationService {
-  static FieldNames = [
-    'id',
-    'goods_id',
-    'specification',
-    'value',
-    'pic_url',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    goods_id: 'goods_id',
+    specification: 'specification',
+    value: 'value',
+    pic_url: 'pic_url',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.goods.specification';
   static TableName = 'app_litemall_goods_specification';
 
@@ -47,40 +46,47 @@ export class AppLitemallGoodsSpecificationService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallGoodsSpecification
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallGoodsSpecification {
-    return Process('models.app.litemall.goods.specification.find', key, where);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallGoodsSpecification[]
    */
   static Get(
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallGoodsSpecification[] {
-    return Process('models.app.litemall.goods.specification.get', where);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.get`,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallGoodsSpecification>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallGoodsSpecification> {
     return Process(
-      'models.app.litemall.goods.specification.Paginate',
-      where,
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -92,7 +98,10 @@ export class AppLitemallGoodsSpecificationService {
    * @returns
    */
   static Create(data: IAppLitemallGoodsSpecification): number {
-    return Process('models.app.litemall.goods.specification.create', data);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.create`,
+      data
+    );
   }
 
   /**
@@ -103,7 +112,7 @@ export class AppLitemallGoodsSpecificationService {
    */
   static Insert(fields: string[], data: any[][]): number {
     return Process(
-      'models.app.litemall.goods.specification.Insert',
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.Insert`,
       fields,
       data
     );
@@ -115,7 +124,10 @@ export class AppLitemallGoodsSpecificationService {
    * @returns
    */
   static Save(data: IAppLitemallGoodsSpecification): number {
-    return Process('models.app.litemall.goods.specification.Save', data);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.Save`,
+      data
+    );
   }
 
   /**
@@ -125,22 +137,26 @@ export class AppLitemallGoodsSpecificationService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallGoodsSpecification) {
-    return Process('models.app.litemall.goods.specification.Update', key, line);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallGoodsSpecification
   ) {
     return Process(
-      'models.app.litemall.goods.specification.UpdateWhere',
-      where,
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.UpdateWhere`,
+      query,
       line
     );
   }
@@ -156,7 +172,7 @@ export class AppLitemallGoodsSpecificationService {
     line: IAppLitemallGoodsSpecification
   ) {
     return Process(
-      'models.app.litemall.goods.specification.EachSave',
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.EachSave`,
       data,
       line
     );
@@ -175,7 +191,7 @@ export class AppLitemallGoodsSpecificationService {
     line: IAppLitemallGoodsSpecification
   ) {
     return Process(
-      'models.app.litemall.goods.specification.EachSaveAfterDelete',
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -188,18 +204,21 @@ export class AppLitemallGoodsSpecificationService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.goods.specification.Delete', key);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.Delete`,
+      key
+    );
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
     return Process(
-      'models.app.litemall.goods.specification.DeleteWhere',
-      where
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.DeleteWhere`,
+      query
     );
   }
 
@@ -209,18 +228,21 @@ export class AppLitemallGoodsSpecificationService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.goods.specification.Destroy', key);
+    return Process(
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.Destroy`,
+      key
+    );
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
     return Process(
-      'models.app.litemall.goods.specification.DestroyWhere',
-      where
+      `models.${AppLitemallGoodsSpecificationService.ModelID}.DestroyWhere`,
+      query
     );
   }
 }

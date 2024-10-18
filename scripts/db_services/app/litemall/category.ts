@@ -12,7 +12,7 @@ export interface IAppLitemallCategory {
   /**类目名称 */
   name?: string;
   /**类目关键字 */
-  keywords?: object;
+  keywords?: any;
   /**类目广告语介绍 */
   desc?: string;
   /**父类目ID */
@@ -36,20 +36,20 @@ export interface IAppLitemallCategory {
 }
 
 export class AppLitemallCategoryService {
-  static FieldNames = [
-    'id',
-    'name',
-    'keywords',
-    'desc',
-    'pid',
-    'icon_url',
-    'pic_url',
-    'level',
-    'sort_order',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    name: 'name',
+    keywords: 'keywords',
+    desc: 'desc',
+    pid: 'pid',
+    icon_url: 'icon_url',
+    pic_url: 'pic_url',
+    level: 'level',
+    sort_order: 'sort_order',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.category';
   static TableName = 'app_litemall_category';
 
@@ -58,38 +58,42 @@ export class AppLitemallCategoryService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallCategory
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallCategory {
-    return Process('models.app.litemall.category.find', key, where);
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallCategory[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallCategory[] {
-    return Process('models.app.litemall.category.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallCategory[] {
+    return Process(`models.${AppLitemallCategoryService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallCategory>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallCategory> {
     return Process(
-      'models.app.litemall.category.Paginate',
-      where,
+      `models.${AppLitemallCategoryService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -101,7 +105,7 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static Create(data: IAppLitemallCategory): number {
-    return Process('models.app.litemall.category.create', data);
+    return Process(`models.${AppLitemallCategoryService.ModelID}.create`, data);
   }
 
   /**
@@ -111,7 +115,11 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.category.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -120,7 +128,7 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static Save(data: IAppLitemallCategory): number {
-    return Process('models.app.litemall.category.Save', data);
+    return Process(`models.${AppLitemallCategoryService.ModelID}.Save`, data);
   }
 
   /**
@@ -130,20 +138,28 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallCategory) {
-    return Process('models.app.litemall.category.Update', key, line);
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallCategory
   ) {
-    return Process('models.app.litemall.category.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -153,7 +169,11 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static EachSave(data: IAppLitemallCategory[], line: IAppLitemallCategory) {
-    return Process('models.app.litemall.category.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -169,7 +189,7 @@ export class AppLitemallCategoryService {
     line: IAppLitemallCategory
   ) {
     return Process(
-      'models.app.litemall.category.EachSaveAfterDelete',
+      `models.${AppLitemallCategoryService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -182,16 +202,19 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.category.Delete', key);
+    return Process(`models.${AppLitemallCategoryService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.category.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -200,15 +223,18 @@ export class AppLitemallCategoryService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.category.Destroy', key);
+    return Process(`models.${AppLitemallCategoryService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.category.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

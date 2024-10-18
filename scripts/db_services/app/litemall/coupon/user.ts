@@ -32,19 +32,19 @@ export interface IAppLitemallCouponUser {
 }
 
 export class AppLitemallCouponUserService {
-  static FieldNames = [
-    'id',
-    'user_id',
-    'coupon_id',
-    'status',
-    'used_time',
-    'start_time',
-    'end_time',
-    'order_id',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    user_id: 'user_id',
+    coupon_id: 'coupon_id',
+    status: 'status',
+    used_time: 'used_time',
+    start_time: 'start_time',
+    end_time: 'end_time',
+    order_id: 'order_id',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.coupon.user';
   static TableName = 'app_litemall_coupon_user';
 
@@ -53,38 +53,42 @@ export class AppLitemallCouponUserService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallCouponUser
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallCouponUser {
-    return Process('models.app.litemall.coupon.user.find', key, where);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallCouponUser[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallCouponUser[] {
-    return Process('models.app.litemall.coupon.user.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallCouponUser[] {
+    return Process(`models.${AppLitemallCouponUserService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallCouponUser>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallCouponUser> {
     return Process(
-      'models.app.litemall.coupon.user.Paginate',
-      where,
+      `models.${AppLitemallCouponUserService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -96,7 +100,10 @@ export class AppLitemallCouponUserService {
    * @returns
    */
   static Create(data: IAppLitemallCouponUser): number {
-    return Process('models.app.litemall.coupon.user.create', data);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.create`,
+      data
+    );
   }
 
   /**
@@ -106,7 +113,11 @@ export class AppLitemallCouponUserService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.coupon.user.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -115,7 +126,7 @@ export class AppLitemallCouponUserService {
    * @returns
    */
   static Save(data: IAppLitemallCouponUser): number {
-    return Process('models.app.litemall.coupon.user.Save', data);
+    return Process(`models.${AppLitemallCouponUserService.ModelID}.Save`, data);
   }
 
   /**
@@ -125,20 +136,28 @@ export class AppLitemallCouponUserService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallCouponUser) {
-    return Process('models.app.litemall.coupon.user.Update', key, line);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallCouponUser
   ) {
-    return Process('models.app.litemall.coupon.user.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -151,7 +170,11 @@ export class AppLitemallCouponUserService {
     data: IAppLitemallCouponUser[],
     line: IAppLitemallCouponUser
   ) {
-    return Process('models.app.litemall.coupon.user.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -167,7 +190,7 @@ export class AppLitemallCouponUserService {
     line: IAppLitemallCouponUser
   ) {
     return Process(
-      'models.app.litemall.coupon.user.EachSaveAfterDelete',
+      `models.${AppLitemallCouponUserService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -180,16 +203,22 @@ export class AppLitemallCouponUserService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.coupon.user.Delete', key);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.Delete`,
+      key
+    );
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.coupon.user.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -198,15 +227,21 @@ export class AppLitemallCouponUserService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.coupon.user.Destroy', key);
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.Destroy`,
+      key
+    );
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.coupon.user.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }

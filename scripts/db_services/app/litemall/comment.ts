@@ -22,7 +22,7 @@ export interface IAppLitemallComment {
   /**是否含有图片 */
   has_picture?: boolean;
   /**图片地址列表 */
-  pic_urls?: object;
+  pic_urls?: any;
   /**评分， 1-5 */
   star?: number;
   /**删除时间 */
@@ -34,20 +34,20 @@ export interface IAppLitemallComment {
 }
 
 export class AppLitemallCommentService {
-  static FieldNames = [
-    'id',
-    'value_id',
-    'type',
-    'content',
-    'admin_content',
-    'user_id',
-    'has_picture',
-    'pic_urls',
-    'star',
-    'deleted_at',
-    'created_at',
-    'updated_at'
-  ];
+  static FieldNames = {
+    id: 'id',
+    value_id: 'value_id',
+    type: 'type',
+    content: 'content',
+    admin_content: 'admin_content',
+    user_id: 'user_id',
+    has_picture: 'has_picture',
+    pic_urls: 'pic_urls',
+    star: 'star',
+    deleted_at: 'deleted_at',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
   static ModelID = 'app.litemall.comment';
   static TableName = 'app_litemall_comment';
 
@@ -56,38 +56,42 @@ export class AppLitemallCommentService {
     /**
     * 根据主键与附加条件查询单条记录。
     * @param key 主键
-    * @param where 筛选条件
+    * @param query 筛选条件
     * @returns IAppLitemallComment
     */
   static Find(
     key: number,
-    where: YaoQueryParam.QueryParam
+    query: YaoQueryParam.QueryParam
   ): IAppLitemallComment {
-    return Process('models.app.litemall.comment.find', key, where);
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.find`,
+      key,
+      query
+    );
   }
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
-   * @param where
+   * @param query
    * @returns IAppLitemallComment[]
    */
-  static Get(where: YaoQueryParam.QueryParam): IAppLitemallComment[] {
-    return Process('models.app.litemall.comment.get', where);
+  static Get(query: YaoQueryParam.QueryParam): IAppLitemallComment[] {
+    return Process(`models.${AppLitemallCommentService.ModelID}.get`, query);
   }
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
-   * @param where
+   * @param query
    * @param page
    * @param perPage
    * @returns ModelPaginateResult<IAppLitemallComment>
    */
   static Paginate(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     page: number,
     perPage: number
   ): ModelPaginateResult<IAppLitemallComment> {
     return Process(
-      'models.app.litemall.comment.Paginate',
-      where,
+      `models.${AppLitemallCommentService.ModelID}.Paginate`,
+      query,
       page,
       perPage
     );
@@ -99,7 +103,7 @@ export class AppLitemallCommentService {
    * @returns
    */
   static Create(data: IAppLitemallComment): number {
-    return Process('models.app.litemall.comment.create', data);
+    return Process(`models.${AppLitemallCommentService.ModelID}.create`, data);
   }
 
   /**
@@ -109,7 +113,11 @@ export class AppLitemallCommentService {
    * @returns
    */
   static Insert(fields: string[], data: any[][]): number {
-    return Process('models.app.litemall.comment.Insert', fields, data);
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.Insert`,
+      fields,
+      data
+    );
   }
 
   /**
@@ -118,7 +126,7 @@ export class AppLitemallCommentService {
    * @returns
    */
   static Save(data: IAppLitemallComment): number {
-    return Process('models.app.litemall.comment.Save', data);
+    return Process(`models.${AppLitemallCommentService.ModelID}.Save`, data);
   }
 
   /**
@@ -128,20 +136,28 @@ export class AppLitemallCommentService {
    * @returns
    */
   static Update(key: number, line: IAppLitemallComment) {
-    return Process('models.app.litemall.comment.Update', key, line);
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.Update`,
+      key,
+      line
+    );
   }
 
   /**
    * 根据条件更新数据记录, 返回更新行数。
-   * @param where
+   * @param query
    * @param line
    * @returns
    */
   static UpdateWhere(
-    where: YaoQueryParam.QueryParam,
+    query: YaoQueryParam.QueryParam,
     line: IAppLitemallComment
   ) {
-    return Process('models.app.litemall.comment.UpdateWhere', where, line);
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.UpdateWhere`,
+      query,
+      line
+    );
   }
 
   /**
@@ -151,7 +167,11 @@ export class AppLitemallCommentService {
    * @returns
    */
   static EachSave(data: IAppLitemallComment[], line: IAppLitemallComment) {
-    return Process('models.app.litemall.comment.EachSave', data, line);
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.EachSave`,
+      data,
+      line
+    );
   }
 
   /**
@@ -167,7 +187,7 @@ export class AppLitemallCommentService {
     line: IAppLitemallComment
   ) {
     return Process(
-      'models.app.litemall.comment.EachSaveAfterDelete',
+      `models.${AppLitemallCommentService.ModelID}.EachSaveAfterDelete`,
       keys,
       data,
       line
@@ -180,16 +200,19 @@ export class AppLitemallCommentService {
    * @returns
    */
   static Delete(key: number) {
-    return Process('models.app.litemall.comment.Delete', key);
+    return Process(`models.${AppLitemallCommentService.ModelID}.Delete`, key);
   }
 
   /**
    * 根据条件删除数据
-   * @param where
+   * @param query
    * @returns
    */
-  static DeleteWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.comment.DeleteWhere', where);
+  static DeleteWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.DeleteWhere`,
+      query
+    );
   }
 
   /**
@@ -198,15 +221,18 @@ export class AppLitemallCommentService {
    * @returns
    */
   static Destroy(key: number) {
-    return Process('models.app.litemall.comment.Destroy', key);
+    return Process(`models.${AppLitemallCommentService.ModelID}.Destroy`, key);
   }
 
   /**
    * 按条件硬删除
-   * @param where
+   * @param query
    * @returns
    */
-  static DestroyWhere(where: YaoQueryParam.QueryParam) {
-    return Process('models.app.litemall.comment.DestroyWhere', where);
+  static DestroyWhere(query: YaoQueryParam.QueryParam) {
+    return Process(
+      `models.${AppLitemallCommentService.ModelID}.DestroyWhere`,
+      query
+    );
   }
 }
