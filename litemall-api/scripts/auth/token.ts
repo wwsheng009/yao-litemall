@@ -27,7 +27,7 @@ export function TrySetToken(
   }
   try {
     const data = Process('utils.jwt.Verify', token);
-    return { __sid: data.sid, __global: data.data };
+    return { sid: data.sid, __global: data.data };
   } catch (error) {
     return;
   }
@@ -58,7 +58,7 @@ export function CheckToken(
   }
 
   const data = Process('utils.jwt.Verify', token);
-  return { __sid: data.sid, __global: data.data };
+  return { sid: data.sid, __global: data.data };
 }
 function error() {
   throw new Exception('Not Authorized', 403);

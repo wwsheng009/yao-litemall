@@ -33,10 +33,10 @@ export function copyAllTableData() {
     }
   });
   const tableList = data.reduce((prev, curr) => {
-    prev.push(curr.Tables_in_litemall);
+    prev.push(curr[Object.keys(curr)[0]]);
     return prev;
   }, []);
-
+  console.log(tableList);
   tableList.forEach((tab) => {
     const modelName = 'app.' + tab.replaceAll('_', '.');
     copyTableData(tab, modelName);

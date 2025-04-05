@@ -335,7 +335,7 @@ export function queryToQueryParam(
 export function FindCachedModelById(modelId: ModelId) {
   const exist = Process(`models.${modelId}.exists`);
   if (exist) {
-    const model = Process(`models.${modelId}.read`);
+    const model = Process(`model.dsl`, modelId, { metadata: true }).metadata;
     const modelDsl = updateModelMetaFields(model);
     return modelDsl;
   } else {

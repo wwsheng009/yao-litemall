@@ -5,7 +5,7 @@
     "type": "mysql", //类型，官方只支持支持sqlite3,mysql,扩展支持postgres,hdb
     "version": "8.0.26",
     "options": {
-        "db": "litemall",
+        "db": "litemall2",
         "charset": "utf8mb4",
         "parseTime": true,
         "hosts": [
