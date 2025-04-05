@@ -1,4 +1,4 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
 
 /**
@@ -7,7 +7,7 @@ import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
  * Table=> app_litemall_ad
  */
 export interface IAppLitemallAd {
-  /**undefined */
+  /**id */
   id?: number;
   /**广告标题 */
   name?: string;
@@ -35,33 +35,44 @@ export interface IAppLitemallAd {
 
 export class AppLitemallAdService {
   static FieldNames = {
+    /** id */
     id: 'id',
+    /** 广告标题 */
     name: 'name',
+    /** 链接地址 */
     link: 'link',
+    /** 广告宣传图片 */
     url: 'url',
+    /** 广告位置 */
     position: 'position',
+    /** 活动内容 */
     content: 'content',
+    /** 广告开始时间 */
     start_time: 'start_time',
+    /** 广告结束时间 */
     end_time: 'end_time',
+    /** 是否启动 */
     enabled: 'enabled',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.ad';
   static TableName = 'app_litemall_ad';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallAd
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallAd
+   */
   static Find(key: number, query: YaoQueryParam.QueryParam): IAppLitemallAd {
     return Process(`models.${AppLitemallAdService.ModelID}.find`, key, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -70,6 +81,7 @@ export class AppLitemallAdService {
   static Get(query: YaoQueryParam.QueryParam): IAppLitemallAd[] {
     return Process(`models.${AppLitemallAdService.ModelID}.get`, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -100,16 +112,50 @@ export class AppLitemallAdService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallAdService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallAd,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallAdService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallAd[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallAdService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -118,7 +164,7 @@ export class AppLitemallAdService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallAd): number {
+  static Save(data: Partial<IAppLitemallAd>): number {
     return Process(`models.${AppLitemallAdService.ModelID}.Save`, data);
   }
 
@@ -128,7 +174,7 @@ export class AppLitemallAdService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallAd) {
+  static Update(key: number, line: Partial<IAppLitemallAd>) {
     return Process(`models.${AppLitemallAdService.ModelID}.Update`, key, line);
   }
 
@@ -138,7 +184,10 @@ export class AppLitemallAdService {
    * @param line
    * @returns
    */
-  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAppLitemallAd) {
+  static UpdateWhere(
+    query: YaoQueryParam.QueryParam,
+    line: Partial<IAppLitemallAd>
+  ) {
     return Process(
       `models.${AppLitemallAdService.ModelID}.UpdateWhere`,
       query,
@@ -152,7 +201,7 @@ export class AppLitemallAdService {
    * @param line
    * @returns
    */
-  static EachSave(data: IAppLitemallAd[], line: IAppLitemallAd) {
+  static EachSave(data: IAppLitemallAd[], line: Partial<IAppLitemallAd>) {
     return Process(
       `models.${AppLitemallAdService.ModelID}.EachSave`,
       data,
@@ -170,7 +219,7 @@ export class AppLitemallAdService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallAd[],
-    line: IAppLitemallAd
+    line: Partial<IAppLitemallAd>
   ) {
     return Process(
       `models.${AppLitemallAdService.ModelID}.EachSaveAfterDelete`,
@@ -187,6 +236,16 @@ export class AppLitemallAdService {
    */
   static Delete(key: number) {
     return Process(`models.${AppLitemallAdService.ModelID}.Delete`, key);
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallAdService.TableName}` }
+    });
   }
 
   /**

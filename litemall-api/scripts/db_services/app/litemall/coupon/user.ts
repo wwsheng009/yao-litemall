@@ -1,4 +1,4 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
 
 /**
@@ -7,7 +7,7 @@ import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
  * Table=> app_litemall_coupon_user
  */
 export interface IAppLitemallCouponUser {
-  /**undefined */
+  /**id */
   id?: number;
   /**用户ID */
   user_id: number;
@@ -33,29 +33,38 @@ export interface IAppLitemallCouponUser {
 
 export class AppLitemallCouponUserService {
   static FieldNames = {
+    /** id */
     id: 'id',
+    /** 用户ID */
     user_id: 'user_id',
+    /** 优惠券ID */
     coupon_id: 'coupon_id',
+    /** 使用状态 */
     status: 'status',
+    /** 使用时间 */
     used_time: 'used_time',
+    /** 有效期开始时间 */
     start_time: 'start_time',
+    /** 有效期截至时间 */
     end_time: 'end_time',
+    /** 订单ID */
     order_id: 'order_id',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.coupon.user';
   static TableName = 'app_litemall_coupon_user';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallCouponUser
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallCouponUser
+   */
   static Find(
     key: number,
     query: YaoQueryParam.QueryParam
@@ -66,6 +75,7 @@ export class AppLitemallCouponUserService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -74,6 +84,7 @@ export class AppLitemallCouponUserService {
   static Get(query: YaoQueryParam.QueryParam): IAppLitemallCouponUser[] {
     return Process(`models.${AppLitemallCouponUserService.ModelID}.get`, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -107,16 +118,50 @@ export class AppLitemallCouponUserService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallCouponUser,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallCouponUserService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallCouponUser[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallCouponUserService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -125,7 +170,7 @@ export class AppLitemallCouponUserService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallCouponUser): number {
+  static Save(data: Partial<IAppLitemallCouponUser>): number {
     return Process(`models.${AppLitemallCouponUserService.ModelID}.Save`, data);
   }
 
@@ -135,7 +180,7 @@ export class AppLitemallCouponUserService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallCouponUser) {
+  static Update(key: number, line: Partial<IAppLitemallCouponUser>) {
     return Process(
       `models.${AppLitemallCouponUserService.ModelID}.Update`,
       key,
@@ -151,7 +196,7 @@ export class AppLitemallCouponUserService {
    */
   static UpdateWhere(
     query: YaoQueryParam.QueryParam,
-    line: IAppLitemallCouponUser
+    line: Partial<IAppLitemallCouponUser>
   ) {
     return Process(
       `models.${AppLitemallCouponUserService.ModelID}.UpdateWhere`,
@@ -168,7 +213,7 @@ export class AppLitemallCouponUserService {
    */
   static EachSave(
     data: IAppLitemallCouponUser[],
-    line: IAppLitemallCouponUser
+    line: Partial<IAppLitemallCouponUser>
   ) {
     return Process(
       `models.${AppLitemallCouponUserService.ModelID}.EachSave`,
@@ -187,7 +232,7 @@ export class AppLitemallCouponUserService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallCouponUser[],
-    line: IAppLitemallCouponUser
+    line: Partial<IAppLitemallCouponUser>
   ) {
     return Process(
       `models.${AppLitemallCouponUserService.ModelID}.EachSaveAfterDelete`,
@@ -207,6 +252,16 @@ export class AppLitemallCouponUserService {
       `models.${AppLitemallCouponUserService.ModelID}.Delete`,
       key
     );
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallCouponUserService.TableName}` }
+    });
   }
 
   /**

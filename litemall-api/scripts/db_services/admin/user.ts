@@ -1,4 +1,4 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
 
 /**
@@ -8,7 +8,7 @@ import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
  */
 export interface IAdminUser {
   /**ID */
-  id: number;
+  id?: number;
   /**类型 */
   type?: 'admin' | 'staff' | 'user' | 'robot';
   /**邮箱 */
@@ -41,36 +41,50 @@ export interface IAdminUser {
 
 export class AdminUserService {
   static FieldNames = {
+    /** ID */
     id: 'id',
+    /** 类型 */
     type: 'type',
+    /** 邮箱 */
     email: 'email',
+    /** 手机号 */
     mobile: 'mobile',
+    /** 登录密码 */
     password: 'password',
+    /** 操作密码 */
     password2nd: 'password2nd',
+    /** 姓名 */
     name: 'name',
+    /** 身份证号码 */
     idcard: 'idcard',
+    /** API Key */
     key: 'key',
+    /** API 密钥 */
     secret: 'secret',
+    /** 扩展信息 */
     extra: 'extra',
+    /** 状态 */
     status: 'status',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'admin.user';
   static TableName = 'admin_user';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAdminUser
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAdminUser
+   */
   static Find(key: string, query: YaoQueryParam.QueryParam): IAdminUser {
     return Process(`models.${AdminUserService.ModelID}.find`, key, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -79,6 +93,7 @@ export class AdminUserService {
   static Get(query: YaoQueryParam.QueryParam): IAdminUser[] {
     return Process(`models.${AdminUserService.ModelID}.get`, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -109,13 +124,51 @@ export class AdminUserService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AdminUserService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAdminUser,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AdminUserService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
-    return Process(`models.${AdminUserService.ModelID}.Insert`, fields, data);
+  static InsertBatch(data: IAdminUser[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
+    return Process(
+      `models.${AdminUserService.ModelID}.Insert`,
+      columns,
+      values
+    );
   }
 
   /**
@@ -123,7 +176,7 @@ export class AdminUserService {
    * @param data
    * @returns
    */
-  static Save(data: IAdminUser): number {
+  static Save(data: Partial<IAdminUser>): number {
     return Process(`models.${AdminUserService.ModelID}.Save`, data);
   }
 
@@ -133,7 +186,7 @@ export class AdminUserService {
    * @param line
    * @returns
    */
-  static Update(key: string, line: IAdminUser) {
+  static Update(key: string, line: Partial<IAdminUser>) {
     return Process(`models.${AdminUserService.ModelID}.Update`, key, line);
   }
 
@@ -143,7 +196,10 @@ export class AdminUserService {
    * @param line
    * @returns
    */
-  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAdminUser) {
+  static UpdateWhere(
+    query: YaoQueryParam.QueryParam,
+    line: Partial<IAdminUser>
+  ) {
     return Process(
       `models.${AdminUserService.ModelID}.UpdateWhere`,
       query,
@@ -157,7 +213,7 @@ export class AdminUserService {
    * @param line
    * @returns
    */
-  static EachSave(data: IAdminUser[], line: IAdminUser) {
+  static EachSave(data: IAdminUser[], line: Partial<IAdminUser>) {
     return Process(`models.${AdminUserService.ModelID}.EachSave`, data, line);
   }
 
@@ -171,7 +227,7 @@ export class AdminUserService {
   static EachSaveAfterDelete(
     keys: string[],
     data: IAdminUser[],
-    line: IAdminUser
+    line: Partial<IAdminUser>
   ) {
     return Process(
       `models.${AdminUserService.ModelID}.EachSaveAfterDelete`,
@@ -188,6 +244,16 @@ export class AdminUserService {
    */
   static Delete(key: string) {
     return Process(`models.${AdminUserService.ModelID}.Delete`, key);
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AdminUserService.TableName}` }
+    });
   }
 
   /**

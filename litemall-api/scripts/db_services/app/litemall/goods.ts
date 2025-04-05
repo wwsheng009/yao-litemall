@@ -1,7 +1,7 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
-import { IAppLitemallBrand } from './brand';
 import { IAppLitemallCategory } from './category';
+import { IAppLitemallBrand } from './brand';
 import { IAppLitemallGoodsAttribute } from './goods/attribute';
 import { IAppLitemallGoodsProduct } from './goods/product';
 import { IAppLitemallGoodsSpecification } from './goods/specification';
@@ -52,6 +52,8 @@ export interface IAppLitemallGoods {
   created_at?: Date;
   /**更新时间 */
   updated_at?: Date;
+  /** Relation: category=> app.litemall.category */
+  category?: IAppLitemallCategory;
   /** Relation: attributes=> app.litemall.goods.attribute */
   attributes?: IAppLitemallGoodsAttribute[];
   /** Relation: products=> app.litemall.goods.product */
@@ -60,44 +62,60 @@ export interface IAppLitemallGoods {
   specifications?: IAppLitemallGoodsSpecification[];
   /** Relation: brand=> app.litemall.brand */
   brand?: IAppLitemallBrand;
-  /** Relation: category=> app.litemall.category */
-  category?: IAppLitemallCategory;
 }
 
 export class AppLitemallGoodsService {
   static FieldNames = {
+    /** ID */
     id: 'id',
+    /** 商品编号 */
     goods_sn: 'goods_sn',
+    /** 商品名称 */
     name: 'name',
+    /** 类目ID */
     category_id: 'category_id',
+    /** 品牌ID */
     brand_id: 'brand_id',
+    /** 商品宣传图片列表 */
     gallery: 'gallery',
+    /** 商品关键字，采用逗号间隔 */
     keywords: 'keywords',
+    /** 商品简介 */
     brief: 'brief',
+    /** 是否上架 */
     is_on_sale: 'is_on_sale',
+    /** 商品页面商品图片 */
     pic_url: 'pic_url',
+    /** 商品分享海报 */
     share_url: 'share_url',
+    /** 是否人气推荐 */
     is_hot: 'is_hot',
+    /** 商品单位 */
     unit: 'unit',
+    /** 专柜价格 */
     counter_price: 'counter_price',
+    /** 商品详细介绍 */
     detail: 'detail',
+    /** 是否新品首发 */
     is_new: 'is_new',
+    /** 零售价格 */
     retail_price: 'retail_price',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.goods';
   static TableName = 'app_litemall_goods';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallGoods
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallGoods
+   */
   static Find(key: number, query: YaoQueryParam.QueryParam): IAppLitemallGoods {
     return Process(
       `models.${AppLitemallGoodsService.ModelID}.find`,
@@ -105,6 +123,7 @@ export class AppLitemallGoodsService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -113,6 +132,7 @@ export class AppLitemallGoodsService {
   static Get(query: YaoQueryParam.QueryParam): IAppLitemallGoods[] {
     return Process(`models.${AppLitemallGoodsService.ModelID}.get`, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -143,16 +163,50 @@ export class AppLitemallGoodsService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallGoodsService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallGoods,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallGoodsService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallGoods[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallGoodsService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -161,7 +215,7 @@ export class AppLitemallGoodsService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallGoods): number {
+  static Save(data: Partial<IAppLitemallGoods>): number {
     return Process(`models.${AppLitemallGoodsService.ModelID}.Save`, data);
   }
 
@@ -171,7 +225,7 @@ export class AppLitemallGoodsService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallGoods) {
+  static Update(key: number, line: Partial<IAppLitemallGoods>) {
     return Process(
       `models.${AppLitemallGoodsService.ModelID}.Update`,
       key,
@@ -185,7 +239,10 @@ export class AppLitemallGoodsService {
    * @param line
    * @returns
    */
-  static UpdateWhere(query: YaoQueryParam.QueryParam, line: IAppLitemallGoods) {
+  static UpdateWhere(
+    query: YaoQueryParam.QueryParam,
+    line: Partial<IAppLitemallGoods>
+  ) {
     return Process(
       `models.${AppLitemallGoodsService.ModelID}.UpdateWhere`,
       query,
@@ -199,7 +256,7 @@ export class AppLitemallGoodsService {
    * @param line
    * @returns
    */
-  static EachSave(data: IAppLitemallGoods[], line: IAppLitemallGoods) {
+  static EachSave(data: IAppLitemallGoods[], line: Partial<IAppLitemallGoods>) {
     return Process(
       `models.${AppLitemallGoodsService.ModelID}.EachSave`,
       data,
@@ -217,7 +274,7 @@ export class AppLitemallGoodsService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallGoods[],
-    line: IAppLitemallGoods
+    line: Partial<IAppLitemallGoods>
   ) {
     return Process(
       `models.${AppLitemallGoodsService.ModelID}.EachSaveAfterDelete`,
@@ -234,6 +291,16 @@ export class AppLitemallGoodsService {
    */
   static Delete(key: number) {
     return Process(`models.${AppLitemallGoodsService.ModelID}.Delete`, key);
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallGoodsService.TableName}` }
+    });
   }
 
   /**

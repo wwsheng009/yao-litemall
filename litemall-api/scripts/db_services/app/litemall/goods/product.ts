@@ -1,5 +1,6 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
+import { IAppLitemallGoods } from '../goods';
 
 /**
  * Model=> app.litemall.goods.product (app.litemall.goods.product)
@@ -7,12 +8,12 @@ import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
  * Table=> app_litemall_goods_product
  */
 export interface IAppLitemallGoodsProduct {
-  /**undefined */
+  /**id */
   id?: number;
   /**商品ID */
   goods_id?: number;
   /**商品规格值列表 */
-  specifications: string[];
+  specifications: any;
   /**商品货品价格 */
   price?: number;
   /**商品货品数量 */
@@ -31,27 +32,34 @@ export interface IAppLitemallGoodsProduct {
 
 export class AppLitemallGoodsProductService {
   static FieldNames = {
+    /** id */
     id: 'id',
+    /** 商品ID */
     goods_id: 'goods_id',
+    /** 商品规格值列表 */
     specifications: 'specifications',
+    /** 商品货品价格 */
     price: 'price',
+    /** 商品货品数量 */
     number: 'number',
+    /** 商品货品图片 */
     url: 'url',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.goods.product';
   static TableName = 'app_litemall_goods_product';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallGoodsProduct
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallGoodsProduct
+   */
   static Find(
     key: number,
     query: YaoQueryParam.QueryParam
@@ -62,6 +70,7 @@ export class AppLitemallGoodsProductService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -73,6 +82,7 @@ export class AppLitemallGoodsProductService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -106,16 +116,50 @@ export class AppLitemallGoodsProductService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallGoodsProductService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallGoodsProduct,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallGoodsProductService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallGoodsProduct[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallGoodsProductService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -124,7 +168,7 @@ export class AppLitemallGoodsProductService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallGoodsProduct): number {
+  static Save(data: Partial<IAppLitemallGoodsProduct>): number {
     return Process(
       `models.${AppLitemallGoodsProductService.ModelID}.Save`,
       data
@@ -137,7 +181,7 @@ export class AppLitemallGoodsProductService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallGoodsProduct) {
+  static Update(key: number, line: Partial<IAppLitemallGoodsProduct>) {
     return Process(
       `models.${AppLitemallGoodsProductService.ModelID}.Update`,
       key,
@@ -153,7 +197,7 @@ export class AppLitemallGoodsProductService {
    */
   static UpdateWhere(
     query: YaoQueryParam.QueryParam,
-    line: IAppLitemallGoodsProduct
+    line: Partial<IAppLitemallGoodsProduct>
   ) {
     return Process(
       `models.${AppLitemallGoodsProductService.ModelID}.UpdateWhere`,
@@ -170,7 +214,7 @@ export class AppLitemallGoodsProductService {
    */
   static EachSave(
     data: IAppLitemallGoodsProduct[],
-    line: IAppLitemallGoodsProduct
+    line: Partial<IAppLitemallGoodsProduct>
   ) {
     return Process(
       `models.${AppLitemallGoodsProductService.ModelID}.EachSave`,
@@ -189,7 +233,7 @@ export class AppLitemallGoodsProductService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallGoodsProduct[],
-    line: IAppLitemallGoodsProduct
+    line: Partial<IAppLitemallGoodsProduct>
   ) {
     return Process(
       `models.${AppLitemallGoodsProductService.ModelID}.EachSaveAfterDelete`,
@@ -209,6 +253,16 @@ export class AppLitemallGoodsProductService {
       `models.${AppLitemallGoodsProductService.ModelID}.Delete`,
       key
     );
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallGoodsProductService.TableName}` }
+    });
   }
 
   /**

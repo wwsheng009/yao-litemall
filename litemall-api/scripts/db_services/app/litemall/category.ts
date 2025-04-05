@@ -1,4 +1,4 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
 
 /**
@@ -7,7 +7,7 @@ import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
  * Table=> app_litemall_category
  */
 export interface IAppLitemallCategory {
-  /**undefined */
+  /**id */
   id?: number;
   /**类目名称 */
   name?: string;
@@ -37,30 +37,40 @@ export interface IAppLitemallCategory {
 
 export class AppLitemallCategoryService {
   static FieldNames = {
+    /** id */
     id: 'id',
+    /** 类目名称 */
     name: 'name',
+    /** 类目关键字 */
     keywords: 'keywords',
+    /** 类目广告语介绍 */
     desc: 'desc',
+    /** 父类目ID */
     pid: 'pid',
+    /** 类目图标 */
     icon_url: 'icon_url',
+    /** 类目图片 */
     pic_url: 'pic_url',
+    /** 层级 */
     level: 'level',
+    /** 排序 */
     sort_order: 'sort_order',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.category';
   static TableName = 'app_litemall_category';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallCategory
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallCategory
+   */
   static Find(
     key: number,
     query: YaoQueryParam.QueryParam
@@ -71,6 +81,7 @@ export class AppLitemallCategoryService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -79,6 +90,7 @@ export class AppLitemallCategoryService {
   static Get(query: YaoQueryParam.QueryParam): IAppLitemallCategory[] {
     return Process(`models.${AppLitemallCategoryService.ModelID}.get`, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -109,16 +121,50 @@ export class AppLitemallCategoryService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallCategory,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallCategoryService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallCategory[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallCategoryService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -127,7 +173,7 @@ export class AppLitemallCategoryService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallCategory): number {
+  static Save(data: Partial<IAppLitemallCategory>): number {
     return Process(`models.${AppLitemallCategoryService.ModelID}.Save`, data);
   }
 
@@ -137,7 +183,7 @@ export class AppLitemallCategoryService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallCategory) {
+  static Update(key: number, line: Partial<IAppLitemallCategory>) {
     return Process(
       `models.${AppLitemallCategoryService.ModelID}.Update`,
       key,
@@ -153,7 +199,7 @@ export class AppLitemallCategoryService {
    */
   static UpdateWhere(
     query: YaoQueryParam.QueryParam,
-    line: IAppLitemallCategory
+    line: Partial<IAppLitemallCategory>
   ) {
     return Process(
       `models.${AppLitemallCategoryService.ModelID}.UpdateWhere`,
@@ -168,7 +214,10 @@ export class AppLitemallCategoryService {
    * @param line
    * @returns
    */
-  static EachSave(data: IAppLitemallCategory[], line: IAppLitemallCategory) {
+  static EachSave(
+    data: IAppLitemallCategory[],
+    line: Partial<IAppLitemallCategory>
+  ) {
     return Process(
       `models.${AppLitemallCategoryService.ModelID}.EachSave`,
       data,
@@ -186,7 +235,7 @@ export class AppLitemallCategoryService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallCategory[],
-    line: IAppLitemallCategory
+    line: Partial<IAppLitemallCategory>
   ) {
     return Process(
       `models.${AppLitemallCategoryService.ModelID}.EachSaveAfterDelete`,
@@ -203,6 +252,16 @@ export class AppLitemallCategoryService {
    */
   static Delete(key: number) {
     return Process(`models.${AppLitemallCategoryService.ModelID}.Delete`, key);
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallCategoryService.TableName}` }
+    });
   }
 
   /**

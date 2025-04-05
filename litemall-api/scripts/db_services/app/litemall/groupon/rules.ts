@@ -1,5 +1,6 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
+import { IAppLitemallGoods } from '../goods';
 
 /**
  * Model=> app.litemall.groupon.rules (app.litemall.groupon.rules)
@@ -35,29 +36,38 @@ export interface IAppLitemallGrouponRules {
 
 export class AppLitemallGrouponRulesService {
   static FieldNames = {
+    /** id */
     id: 'id',
+    /** 商品ID */
     goods_id: 'goods_id',
+    /** 商品名称 */
     goods_name: 'goods_name',
+    /** 商品图片 */
     pic_url: 'pic_url',
+    /** 优惠金额 */
     discount: 'discount',
+    /** 达到优惠条件的人数 */
     discount_member: 'discount_member',
+    /** 团购过期时间 */
     expire_time: 'expire_time',
+    /** 团购规则状态 */
     status: 'status',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.groupon.rules';
   static TableName = 'app_litemall_groupon_rules';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallGrouponRules
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallGrouponRules
+   */
   static Find(
     key: number,
     query: YaoQueryParam.QueryParam
@@ -68,6 +78,7 @@ export class AppLitemallGrouponRulesService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -79,6 +90,7 @@ export class AppLitemallGrouponRulesService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -112,16 +124,50 @@ export class AppLitemallGrouponRulesService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallGrouponRules,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallGrouponRulesService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallGrouponRules[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallGrouponRulesService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -130,7 +176,7 @@ export class AppLitemallGrouponRulesService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallGrouponRules): number {
+  static Save(data: Partial<IAppLitemallGrouponRules>): number {
     return Process(
       `models.${AppLitemallGrouponRulesService.ModelID}.Save`,
       data
@@ -143,7 +189,7 @@ export class AppLitemallGrouponRulesService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallGrouponRules) {
+  static Update(key: number, line: Partial<IAppLitemallGrouponRules>) {
     return Process(
       `models.${AppLitemallGrouponRulesService.ModelID}.Update`,
       key,
@@ -159,7 +205,7 @@ export class AppLitemallGrouponRulesService {
    */
   static UpdateWhere(
     query: YaoQueryParam.QueryParam,
-    line: IAppLitemallGrouponRules
+    line: Partial<IAppLitemallGrouponRules>
   ) {
     return Process(
       `models.${AppLitemallGrouponRulesService.ModelID}.UpdateWhere`,
@@ -176,7 +222,7 @@ export class AppLitemallGrouponRulesService {
    */
   static EachSave(
     data: IAppLitemallGrouponRules[],
-    line: IAppLitemallGrouponRules
+    line: Partial<IAppLitemallGrouponRules>
   ) {
     return Process(
       `models.${AppLitemallGrouponRulesService.ModelID}.EachSave`,
@@ -195,7 +241,7 @@ export class AppLitemallGrouponRulesService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallGrouponRules[],
-    line: IAppLitemallGrouponRules
+    line: Partial<IAppLitemallGrouponRules>
   ) {
     return Process(
       `models.${AppLitemallGrouponRulesService.ModelID}.EachSaveAfterDelete`,
@@ -215,6 +261,16 @@ export class AppLitemallGrouponRulesService {
       `models.${AppLitemallGrouponRulesService.ModelID}.Delete`,
       key
     );
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallGrouponRulesService.TableName}` }
+    });
   }
 
   /**

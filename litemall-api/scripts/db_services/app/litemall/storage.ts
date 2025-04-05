@@ -1,4 +1,4 @@
-import { Process } from '@yaoapps/client';
+import { Process, Query } from '@yaoapps/client';
 import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
 
 /**
@@ -7,7 +7,7 @@ import { ModelPaginateResult, YaoQueryParam } from '@yaoapps/types';
  * Table=> app_litemall_storage
  */
 export interface IAppLitemallStorage {
-  /**undefined */
+  /**id */
   id?: number;
   /**文件的唯一索引 */
   key: string;
@@ -29,27 +29,34 @@ export interface IAppLitemallStorage {
 
 export class AppLitemallStorageService {
   static FieldNames = {
+    /** id */
     id: 'id',
+    /** 文件的唯一索引 */
     key: 'key',
+    /** 文件名 */
     name: 'name',
+    /** 文件类型 */
     type: 'type',
+    /** 文件大小 */
     size: 'size',
+    /** 文件访问链接 */
     url: 'url',
+    /** 删除时间 */
     deleted_at: 'deleted_at',
+    /** 创建时间 */
     created_at: 'created_at',
+    /** 更新时间 */
     updated_at: 'updated_at'
   };
   static ModelID = 'app.litemall.storage';
   static TableName = 'app_litemall_storage';
 
   /**
-    * 根据主键查询单条记录。
-    /**
-    * 根据主键与附加条件查询单条记录。
-    * @param key 主键
-    * @param query 筛选条件
-    * @returns IAppLitemallStorage
-    */
+   * 根据主键与附加条件查询单条记录。
+   * @param key 主键
+   * @param query 筛选条件
+   * @returns IAppLitemallStorage
+   */
   static Find(
     key: number,
     query: YaoQueryParam.QueryParam
@@ -60,6 +67,7 @@ export class AppLitemallStorageService {
       query
     );
   }
+
   /**
    * 根据条件查询数据记录, 返回符合条件的结果集。
    * @param query
@@ -68,6 +76,7 @@ export class AppLitemallStorageService {
   static Get(query: YaoQueryParam.QueryParam): IAppLitemallStorage[] {
     return Process(`models.${AppLitemallStorageService.ModelID}.get`, query);
   }
+
   /**
    * 根据条件查询数据记录, 返回带有分页信息的数据对象。
    * @param query
@@ -98,16 +107,50 @@ export class AppLitemallStorageService {
   }
 
   /**
+   * 根据字段与数据，一次性插入多条数据记录，返回插入行数
+   * @param columns
+   * @param values
+   * @returns
+   */
+  static Insert(columns: string[], values: any[][]): number {
+    return Process(
+      `models.${AppLitemallStorageService.ModelID}.Insert`,
+      columns,
+      values
+    );
+  }
+
+  /**
+   * 如果记录不存在则插入，如果存在则更新记录
+   * @param data 数据
+   * @param uniqueBy 唯一键 或 唯一键数组
+   * @param updateColumns 更新或插入记录的ID
+   * @returns afftectedRows
+   */
+  static Upsert(
+    data: IAppLitemallStorage,
+    uniqueBy: string | string[],
+    updateColumns?: string[]
+  ): number {
+    return Process(
+      `models.${AppLitemallStorageService.ModelID}.Upsert`,
+      data,
+      uniqueBy,
+      updateColumns
+    );
+  }
+
+  /**
    * 一次性插入多条数据记录，返回插入行数
-   * @param fields
    * @param data
    * @returns
    */
-  static Insert(fields: string[], data: any[][]): number {
+  static InsertBatch(data: IAppLitemallStorage[]): number {
+    const { columns, values } = Process('utils.arr.split', data);
     return Process(
       `models.${AppLitemallStorageService.ModelID}.Insert`,
-      fields,
-      data
+      columns,
+      values
     );
   }
 
@@ -116,7 +159,7 @@ export class AppLitemallStorageService {
    * @param data
    * @returns
    */
-  static Save(data: IAppLitemallStorage): number {
+  static Save(data: Partial<IAppLitemallStorage>): number {
     return Process(`models.${AppLitemallStorageService.ModelID}.Save`, data);
   }
 
@@ -126,7 +169,7 @@ export class AppLitemallStorageService {
    * @param line
    * @returns
    */
-  static Update(key: number, line: IAppLitemallStorage) {
+  static Update(key: number, line: Partial<IAppLitemallStorage>) {
     return Process(
       `models.${AppLitemallStorageService.ModelID}.Update`,
       key,
@@ -142,7 +185,7 @@ export class AppLitemallStorageService {
    */
   static UpdateWhere(
     query: YaoQueryParam.QueryParam,
-    line: IAppLitemallStorage
+    line: Partial<IAppLitemallStorage>
   ) {
     return Process(
       `models.${AppLitemallStorageService.ModelID}.UpdateWhere`,
@@ -157,7 +200,10 @@ export class AppLitemallStorageService {
    * @param line
    * @returns
    */
-  static EachSave(data: IAppLitemallStorage[], line: IAppLitemallStorage) {
+  static EachSave(
+    data: IAppLitemallStorage[],
+    line: Partial<IAppLitemallStorage>
+  ) {
     return Process(
       `models.${AppLitemallStorageService.ModelID}.EachSave`,
       data,
@@ -175,7 +221,7 @@ export class AppLitemallStorageService {
   static EachSaveAfterDelete(
     keys: number[],
     data: IAppLitemallStorage[],
-    line: IAppLitemallStorage
+    line: Partial<IAppLitemallStorage>
   ) {
     return Process(
       `models.${AppLitemallStorageService.ModelID}.EachSaveAfterDelete`,
@@ -192,6 +238,16 @@ export class AppLitemallStorageService {
    */
   static Delete(key: number) {
     return Process(`models.${AppLitemallStorageService.ModelID}.Delete`, key);
+  }
+
+  /**
+   * 删除所有数据
+   * @returns
+   */
+  static DeleteAll() {
+    return new Query('default').Run({
+      sql: { stmt: `delete from ${AppLitemallStorageService.TableName}` }
+    });
   }
 
   /**
